@@ -25,7 +25,7 @@ class UserDefaultHelper {
         }
     }
     func login(userName: String, password: String){
-        var lstParams : [String : AnyObject] = ["phone":userName as AnyObject,"password": password as AnyObject]
+        let lstParams : [String : AnyObject] = ["phone":userName as AnyObject,"password": password as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.LOGIN_SOAL, lstParam: lstParams){
             response , status in
             if status {
@@ -44,7 +44,7 @@ class UserDefaultHelper {
         }
     }
     func signup(userName: String, password: String, phone : String, email: String){
-        var lstParams : [String : AnyObject] = ["name":userName as AnyObject,"password": password as AnyObject,"phone": phone as AnyObject, "email" : email as AnyObject]
+        let lstParams : [String : AnyObject] = ["name":userName as AnyObject,"password": password as AnyObject,"phone": phone as AnyObject, "email" : email as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SIGNUP_SOAL, lstParam: lstParams){
             response , status in
             if status {
@@ -62,9 +62,9 @@ class UserDefaultHelper {
             
         }
     }
-    func rsetPass(phone : String, password : String){
-        var lsParamss : [String : AnyObject] = ["phone" : phone as AnyObject, "password" : password as AnyObject]
-        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.RESET_PASS, lstParam: lsParamss){
+    func resetPass(phone : String, password : String){
+        let lstParams : [String : AnyObject] = ["phone" : phone as AnyObject, "password" : password as AnyObject]
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.RESET_PASS, lstParam: lstParams){
             response , status in
             if status {
                 //signup handler
