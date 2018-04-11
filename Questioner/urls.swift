@@ -11,7 +11,7 @@ import Foundation
 class URLHelper : NSObject {
     static let LOGIN_SOAL = "soal/login/"
     static let SIGNUP_SOAL = "soal/register/"
-    static let RESET_PASS = " resetpassword/"
+    static let RESET_PASS = "soal/resetpassword/"
 
 
 }

@@ -15,11 +15,13 @@ class ResetPasswordVC: UIViewController, UserDelegate {
     
     @IBOutlet weak var password1TF: UITextField!
     @IBOutlet weak var password2TF: UITextField!
+    @IBOutlet weak var indic: UIActivityIndicatorView!
     
     var userHelper = UserDefaultHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.indic.isHidden = true
         self.userHelper.delegate = self
         self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFit)
         
@@ -46,21 +48,29 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func Registe(_ sender: Any) {
+    @IBAction func Register(_ sender: Any) {
         if password1TF.text != nil && password1TF.text?.count == 11 && password2TF != nil {
-            userHelper.rsetPass(phone: password1TF.text!, password: password2TF.text!)
+            self.indic.isHidden = false
+            indic.startAnimating()
+            userHelper.resetPass(phone: password1TF.text!, password: password2TF.text!)
             
         }else {
             
-            ViewHelper.showToastMessage(message: "All fields required")
+            ViewHelper.showToastMessage(message: "All fields required to fill correctly")
         }
         
     }
     func userLoggedIn() {
+        self.indic.isHidden = true
+        self.indic.stopAnimating()
+        ViewHelper.showToastMessage(message: "Reset successfuly")
         // indicator segue
     }
     func userCouldNotLoggedIn(error: String) {
-        ViewHelper.showToastMessage(message: "error")
+        self.indic.isHidden = true
+
+        self.indic.stopAnimating()
+        ViewHelper.showToastMessage(message: error)
     }
 
     

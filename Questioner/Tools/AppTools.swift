@@ -15,7 +15,7 @@ class AppTools : NSObject{
         }
         
         switch data.lowercased() {
-        case "true", "yes", "1", "successful", "success":
+        case "true", "yes", "1", "success":
             return true
         default:
             return false

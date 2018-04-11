@@ -16,10 +16,12 @@ class LoginVC: UIViewController, UserDelegate{
     
     @IBOutlet weak var usernameTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
+    @IBOutlet weak var indic: UIActivityIndicatorView!
     
     var userHelper = UserDefaultHelper()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.indic.isHidden = true
         userHelper.delegate = self
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
@@ -50,6 +52,8 @@ class LoginVC: UIViewController, UserDelegate{
     
     @IBAction func loginPressed(_ sender: Any) {
         if usernameTF.text != nil && passwordTF.text != nil {
+            self.indic.isHidden = false
+            self.indic.startAnimating()
             userHelper.login(userName: usernameTF.text!, password: passwordTF.text!)
         }
         else {
@@ -57,11 +61,16 @@ class LoginVC: UIViewController, UserDelegate{
         }
     }
     func userLoggedIn() {
-        ViewHelper.showToastMessage(message: "Logged In Successfully")
+        self.indic.isHidden = true
+        self.indic.stopAnimating()
+        ViewHelper.showToastMessage(message: "Logged In Succesfully")
+
         //indicator
         //segue
     }
     func userCouldNotLoggedIn(error: String) {
+        self.indic.isHidden = true
+        self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: error)
         
     }

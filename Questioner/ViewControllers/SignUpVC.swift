@@ -23,14 +23,16 @@ class SignUpVC: UIViewController, UserDelegate {
     @IBOutlet weak var repeatpass: UITextField!
     @IBOutlet weak var email: UITextField!
     
+    @IBOutlet weak var indic: UIActivityIndicatorView!
     var userHelper = UserDefaultHelper()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.indic.isHidden = true
         userHelper.delegate = self
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         
-        self.conditionsView.addBackground(imageName: "background3", contentMode: .scaleAspectFit)
+        self.conditionsView.addBackground(imageName: "background3", contentMode: .scaleToFill)
 
     }
 
@@ -64,10 +66,9 @@ class SignUpVC: UIViewController, UserDelegate {
     @IBAction func signUpPressed(_ sender: Any) {
         if phoneNumber.text?.count == 11 && phoneNumber.text != nil && email.text != nil && name.text != nil{
             if pass.text != nil && repeatpass.text != nil && pass.text == repeatpass.text {
-        let parametersList : [String : AnyObject] = ["phone" : phoneNumber.text! as AnyObject,
-            "password" : pass.text! as AnyObject,
-            "name" : name.text! as AnyObject,
-            "email" : email.text! as AnyObject]
+                
+                self.indic.isHidden = false
+                self.indic.startAnimating()
         
         userHelper.signup(userName: name.text!, password: pass.text!, phone: phoneNumber.text!, email: email.text!)
         }
@@ -81,12 +82,16 @@ class SignUpVC: UIViewController, UserDelegate {
             
     }
     func userLoggedIn() {
-        ViewHelper.showToastMessage(message: "User Created")
-
-        //show indicator
+        self.indic.isHidden = true
+        self.indic.stopAnimating()
+        ViewHelper.showToastMessage(message: "Signed UP Succesfully")
+        
+        //indicator
         //segue
     }
     func userCouldNotLoggedIn(error: String) {
+        self.indic.isHidden = true
+        self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: error)
     }
     
