@@ -12,6 +12,8 @@ class URLHelper : NSObject {
     static let LOGIN_SOAL = "soal/login/"
     static let SIGNUP_SOAL = "soal/register/"
     static let RESET_PASS = "soal/resetpassword/"
-
-
+    static let SEND_MSG = "chat/send/"
+    static let GET_MSG = "chat/get/"
+    static let SEND_IMG = "chat/sendimage/"
+    static let SEND_FILE = "chat/sendfile/"
 }
