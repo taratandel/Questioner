@@ -16,13 +16,13 @@ class SignUpVC: UIViewController, UserDelegate {
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var passwordRepeatView: UIView!
     @IBOutlet weak var conditionsView: UIView!
-    
+
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var pass: UITextField!
     @IBOutlet weak var repeatpass: UITextField!
     @IBOutlet weak var email: UITextField!
-    
+
     @IBOutlet weak var indic: UIActivityIndicatorView!
     var userHelper = UserDefaultHelper()
     override func viewDidLoad() {
@@ -31,61 +31,60 @@ class SignUpVC: UIViewController, UserDelegate {
         userHelper.delegate = self
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
-        
+
         self.conditionsView.addBackground(imageName: "background3", contentMode: .scaleToFill)
 
     }
 
-    
+
     @IBAction func acceptBtnPressed(_ sender: Any) {
         self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
-        
+
         self.editView(viewToEdit: nameView)
         self.editView(viewToEdit: emailView)
         self.editView(viewToEdit: phoneView)
         self.editView(viewToEdit: passwordView)
         self.editView(viewToEdit: passwordRepeatView)
-        
+
         conditionsView.isHidden = true
     }
-    
+
     func editView(viewToEdit: UIView) {
-        
+
         viewToEdit.layer.cornerRadius = viewToEdit.frame.height / 2;
         viewToEdit.clipsToBounds = true
-        
-        let viewShadowframe = CGRect(x: viewToEdit.frame.origin.x-5, y: viewToEdit.frame.origin.y+5, width: viewToEdit.frame.width, height: viewToEdit.frame.height)
+
+        let viewShadowframe = CGRect(x: viewToEdit.frame.origin.x - 5, y: viewToEdit.frame.origin.y + 5, width: viewToEdit.frame.width, height: viewToEdit.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: viewShadowframe, color: .black, opacity: 0.5, radius: viewToEdit.frame.height / 2))
         self.view.bringSubview(toFront: viewToEdit)
-        
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     @IBAction func signUpPressed(_ sender: Any) {
-        if phoneNumber.text?.count == 11 && phoneNumber.text != nil && email.text != nil && name.text != nil{
+        if phoneNumber.text?.count == 11 && phoneNumber.text != nil && email.text != nil && name.text != nil {
             if pass.text != nil && repeatpass.text != nil && pass.text == repeatpass.text {
-                
+
                 self.indic.isHidden = false
                 self.indic.startAnimating()
-        
-        userHelper.signup(userName: name.text!, password: pass.text!, phone: phoneNumber.text!, email: email.text!)
-        }
-            else {
+                
+                userHelper.signup(userName: name.text!, password: pass.text!, phone: phoneNumber.text!, email: email.text!)
+            }else {
                 ViewHelper.showToastMessage(message: "Passwords should match")
             }
-        }else {
-            
+        } else {
+
             ViewHelper.showToastMessage(message: "All fields are required")
         }
-            
+
     }
     func userLoggedIn() {
         self.indic.isHidden = true
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: "Signed UP Succesfully")
-        
+
         //indicator
         //segue
     }
@@ -94,7 +93,7 @@ class SignUpVC: UIViewController, UserDelegate {
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: error)
     }
-    
+
 
     /*
     // MARK: - Navigation
