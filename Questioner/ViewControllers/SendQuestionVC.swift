@@ -47,6 +47,9 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         messageHelper.delegate = self
 
         messagesCollectionView.delegate = self
+        messagesCollectionView.dataSource = self
+        messagesCollectionView.isHidden = true
+
 
         self.questionView.layer.cornerRadius = 30
         self.questionView.clipsToBounds = true
@@ -57,8 +60,17 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         self.getMessages()
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.getMessages), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.getMessages), userInfo: nil, repeats: true)
 
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let contentSize: CGSize? = messagesCollectionView?.collectionViewLayout.collectionViewContentSize
+        if (messagesCollectionView?.bounds.size.height.isLess(than: (contentSize?.height)!))! {
+            let targetContentOffset = CGPoint(x: 0.0, y: (contentSize?.height)! - (messagesCollectionView?.bounds.size.height)!)
+            messagesCollectionView?.contentOffset = targetContentOffset
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -167,7 +179,33 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 
     @IBAction func send(_ sender: Any) {
+        if (questionTF.text?.isEmpty)!{
+            ViewHelper.showToastMessage(message: "There is nothing to send")
+        }else{
+            var typeString = String()
+            switch type {
+            case .english:
+                typeString = "english"
+            case .math:
+                typeString = "math"
+            case .science:
+                typeString = "science"
+            case .toefl:
+                typeString = "toefl"
+            default:
+                break
+            }
+            messageHelper.sendMessage(teacherID: "09000000001", studentID: "09000000002", message: questionTF.text!, type: typeString)
+            questionTF.text = ""
+        }
+    }
 
+    func sendMessageSuccessfully() {
+        getMessages()
+    }
+
+    func sendMessageUnsuccessfully(error: String) {
+        ViewHelper.showToastMessage(message: error)
     }
 
     @objc func getMessages(){
@@ -177,10 +215,17 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     func getMessagesSuccessfully(messages: [Message]) {
 
         if messages.count > numOfCurrentMessages{
+            self.messagesCollectionView.isHidden = false
             self.messages = messages
+
 //            let indexPaths = Array(numOfCurrentMessages..<messages.count).map { IndexPath(item: $0, section: 0) }
-//            messagesCollectionView.insertItems(at: indexPaths)
+//
+//            messagesCollectionView.performBatchUpdates({
+//                messagesCollectionView.insertItems(at: indexPaths)
+//            }, completion: nil)
+
             messagesCollectionView.reloadData()
+            messagesCollectionView.scrollToItem(at: IndexPath(item: messages.count-1, section: 0), at: .top, animated: true)
             numOfCurrentMessages = messages.count
         }
     }
@@ -193,12 +238,34 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         return messages.count
     }
 
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "messageCell", for: indexPath) as! MessageCVC
         let message = messages[indexPath.row]
         cell.messageLbl.text = message.message
         cell.nameLbl.text = message.name
         cell.timeLbl.text = message.time
+
+        switch type {
+        case .english:
+            cell.nameLbl.textColor = UIColor("#66320F99")
+            cell.timeLbl.textColor = UIColor("#AF371699")
+        case .math:
+            cell.nameLbl.textColor = UIColor("#455D2099")
+            cell.timeLbl.textColor = UIColor("#95C45799")
+        case .science:
+            cell.nameLbl.textColor = UIColor("#47184C99")
+            cell.timeLbl.textColor = UIColor("#66408A99")
+        case .toefl:
+            cell.nameLbl.textColor = UIColor("#1C3E5C99")
+            cell.timeLbl.textColor = UIColor("#175D9999")
+        default:
+            break
+        }
+        cell.layer.opacity = 1
         return cell
     }
     /*

@@ -19,7 +19,7 @@ import SwiftyJSON
 class MessageHelper {
     var delegate: MessageDelegate!
 
-    func sendMessage(teacherID: Int, studentID: Int, message: String, type: String) {
+    func sendMessage(teacherID: String, studentID: String, message: String, type: String) {
         let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
 
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_MSG, lstParam: lstParams, onCompletion: {
@@ -36,7 +36,7 @@ class MessageHelper {
         })
     }
 
-    func sendImgMessage(teacherID: Int, studentID: Int, message: String, type: String, image: UIImage) {
+    func sendImgMessage(teacherID: String, studentID: String, message: String, type: String, image: UIImage) {
         let imageData = UIImageJPEGRepresentation(image, 1)
         let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_IMG, lstParam: lstParams, onCompletion: {
@@ -53,7 +53,7 @@ class MessageHelper {
         })
     }
 
-    func sendFileMessage(teacherID: Int, studentID: Int, message: String, type: String) {
+    func sendFileMessage(teacherID: String, studentID: String, message: String, type: String) {
         let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_FILE, lstParam: lstParams, onCompletion: {
             response, status in

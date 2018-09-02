@@ -13,5 +13,10 @@ class MessageCVC: UICollectionViewCell {
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var timeLbl: UILabel!
     @IBOutlet weak var messageLbl: UILabel!
-    
+
+    override func awakeFromNib() {
+        messageLbl.layer.cornerRadius = 10;
+        messageLbl.clipsToBounds = true
+    }
+
 }

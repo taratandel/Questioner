@@ -23,12 +23,26 @@ class Message: NSObject {
         //inja bayad badan esme moalem ro begirimo bezarim
 
         if jsonData["isTeacher"].boolValue{
-            message.name = "teacher"
+            message.name = " teacher"
         }else{
-            message.name = "me"
+            message.name = " me"
         }
-        message.message = jsonData["message"].stringValue
-        message.time = jsonData["timeStamp"].stringValue
+        message.message = "  " + jsonData["message"].stringValue
+
+        let calendar = NSCalendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'"
+        if let date = dateFormatter.date(from: jsonData["timeStamp"].stringValue) {
+            if calendar.isDateInToday(date){
+                dateFormatter.dateFormat = "HH:mm"
+                message.time = (dateFormatter.string(from: date)) + " "
+            }else{
+                dateFormatter.dateFormat = "MM/dd"
+                message.time = (dateFormatter.string(from: date)) + " "
+            }
+        }else{
+            message.time = ""
+        }
         message.isTeacher = jsonData["isTeacher"].boolValue
         if jsonData["file"].exists(){
             message.file = jsonData["file"].stringValue
