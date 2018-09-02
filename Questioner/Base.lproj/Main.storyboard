@@ -464,9 +464,8 @@
                                     <constraint firstAttribute="width" constant="100" id="QRa-ax-GOu"/>
                                 </constraints>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9w6-Gr-V5h">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9w6-Gr-V5h">
                                 <rect key="frame" x="16" y="68" width="343" height="451"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.10284674657534247" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vcb-aO-3c7">
                                     <size key="itemSize" width="343" height="110"/>
@@ -537,19 +536,26 @@
                         <constraints>
                             <constraint firstItem="MLx-4n-Lws" firstAttribute="trailing" secondItem="wNw-zp-mDO" secondAttribute="trailing" constant="16" id="3Ua-cC-Tt7"/>
                             <constraint firstItem="JeJ-If-ZTJ" firstAttribute="leading" secondItem="MLx-4n-Lws" secondAttribute="leading" constant="16" id="4qj-ij-IXy"/>
+                            <constraint firstItem="9w6-Gr-V5h" firstAttribute="top" secondItem="JeJ-If-ZTJ" secondAttribute="bottom" constant="8" id="4yg-8W-HFu"/>
                             <constraint firstItem="MLx-4n-Lws" firstAttribute="bottom" secondItem="wNw-zp-mDO" secondAttribute="bottom" constant="30" id="GTB-dz-o2E"/>
                             <constraint firstItem="MLx-4n-Lws" firstAttribute="trailing" secondItem="ByZ-7G-h7g" secondAttribute="trailing" constant="16" id="HFU-VI-coI"/>
                             <constraint firstItem="ByZ-7G-h7g" firstAttribute="top" secondItem="MLx-4n-Lws" secondAttribute="top" id="Szt-CQ-1bQ"/>
+                            <constraint firstItem="9w6-Gr-V5h" firstAttribute="top" secondItem="JeJ-If-ZTJ" secondAttribute="bottom" constant="8" id="YAC-lT-tUR"/>
                             <constraint firstItem="JeJ-If-ZTJ" firstAttribute="top" secondItem="MLx-4n-Lws" secondAttribute="top" id="fnN-6j-DWZ"/>
+                            <constraint firstItem="9w6-Gr-V5h" firstAttribute="top" secondItem="ByZ-7G-h7g" secondAttribute="bottom" constant="8" id="gmZ-IL-U6U"/>
                             <constraint firstItem="wNw-zp-mDO" firstAttribute="leading" secondItem="MLx-4n-Lws" secondAttribute="leading" constant="16" id="hM2-vm-144"/>
+                            <constraint firstItem="9w6-Gr-V5h" firstAttribute="leading" secondItem="MLx-4n-Lws" secondAttribute="leading" constant="16" id="owi-gc-e6u"/>
+                            <constraint firstItem="wNw-zp-mDO" firstAttribute="top" secondItem="9w6-Gr-V5h" secondAttribute="bottom" constant="8" id="z15-do-YDY"/>
+                            <constraint firstItem="MLx-4n-Lws" firstAttribute="trailing" secondItem="9w6-Gr-V5h" secondAttribute="trailing" constant="16" id="z9e-cg-QHC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MLx-4n-Lws"/>
                     </view>
                     <connections>
                         <outlet property="attachmentBtn" destination="aOk-kY-KCR" id="rcw-OZ-TpF"/>
                         <outlet property="backBtn" destination="JeJ-If-ZTJ" id="99e-gG-MDX"/>
+                        <outlet property="buttomConstraint" destination="GTB-dz-o2E" id="UZs-3q-uIl"/>
                         <outlet property="historyBtn" destination="ByZ-7G-h7g" id="yfD-Z4-ofo"/>
-                        <outlet property="imageBtn" destination="Zif-1b-btm" id="LjY-XQ-nZe"/>
+                        <outlet property="imageBtn" destination="Zif-1b-btm" id="AvW-Sj-ZSC"/>
                         <outlet property="messagesCollectionView" destination="9w6-Gr-V5h" id="aMx-m3-CnL"/>
                         <outlet property="questionTF" destination="UT7-5c-iQV" id="hkB-Np-xDG"/>
                         <outlet property="questionView" destination="wNw-zp-mDO" id="Cla-Gp-cE8"/>

@@ -19,6 +19,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         case toefl
     }
 
+    @IBOutlet weak var buttomConstraint: NSLayoutConstraint!
     @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var historyBtn: UIButton!
 
@@ -55,6 +56,8 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.questionView.clipsToBounds = true
 
         self.questionTF.layer.cornerRadius = 30
+        
+        self.hideKeyboardWhenTappedAround()
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -120,20 +123,17 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
 
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.buttomConstraint.constant = keyboardHeight
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
-        }
+        self.buttomConstraint.constant = 30
+
     }
 
     @IBAction func imgPressed(_ sender: Any) {
@@ -268,6 +268,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         cell.layer.opacity = 1
         return cell
     }
+
     /*
     // MARK: - Navigation
 
