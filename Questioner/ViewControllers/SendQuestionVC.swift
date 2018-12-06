@@ -2,78 +2,53 @@
 //  SendQuestionVC.swift
 //  Questioner
 //
-//  Created by negar on 97/Tir/23 AP.
+//  Created by negar on 97/Aban/30 AP.
 //  Copyright © 1397 negar. All rights reserved.
 //
 
 import UIKit
-import UIColor_Hex_Swift
 
-class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, MessageDelegate, UICollectionViewDataSource{
+enum typeEnum {
+    case none
+    case science
+    case math
+    case english
+    case toefl
 
-    enum typeEnum {
-        case none
-        case science
-        case math
-        case english
-        case toefl
+    var toString : String {
+        switch self {
+        case .science: return "science"
+        case .math: return "math"
+        case .english: return "english"
+        case .toefl: return "toefl"
+        case .none: return ""
+        }
     }
+}
 
-    @IBOutlet weak var buttomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backBtn: UIButton!
-    @IBOutlet weak var historyBtn: UIButton!
+class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MessageDelegate {
+    
+    @IBOutlet weak var indicatorView: UIView!
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
 
     @IBOutlet weak var questionView: UIView!
-
     @IBOutlet weak var questionTF: UITextField!
-    @IBOutlet weak var attachmentBtn: UIButton!
-    @IBOutlet weak var imageBtn: UIButton!
     @IBOutlet weak var sendBtn: UIButton!
-    @IBOutlet weak var messagesCollectionView: UICollectionView!
+    @IBOutlet weak var imageBtn: UIButton!
 
     var type = typeEnum.none
 
-    var timer = Timer()
+    var isSearching = false
 
     var messageHelper = MessageHelper()
-    var messages = [Message()]
-    var numOfCurrentMessages : Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         self.initViews()
-
-        messageHelper.delegate = self
-
-        messagesCollectionView.delegate = self
-        messagesCollectionView.dataSource = self
-        messagesCollectionView.isHidden = true
-
-
-        self.questionView.layer.cornerRadius = 30
-        self.questionView.clipsToBounds = true
-
-        self.questionTF.layer.cornerRadius = 30
-        
-        self.hideKeyboardWhenTappedAround()
-
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
-        self.getMessages()
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.getMessages), userInfo: nil, repeats: true)
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let contentSize: CGSize? = messagesCollectionView?.collectionViewLayout.collectionViewContentSize
-        if (messagesCollectionView?.bounds.size.height.isLess(than: (contentSize?.height)!))! {
-            let targetContentOffset = CGPoint(x: 0.0, y: (contentSize?.height)! - (messagesCollectionView?.bounds.size.height)!)
-            messagesCollectionView?.contentOffset = targetContentOffset
-        }
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,37 +58,53 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     func initViews() {
+        indicator.startAnimating()
+
+        if isSearching {
+            questionView.isHidden = true
+            indicatorView.isHidden = false
+        }else{
+            questionView.isHidden = false
+            indicatorView.isHidden = true
+        }
+
+        indicatorView.layer.cornerRadius = 20
+        indicatorView.layer.masksToBounds = true
+        indicatorView.alpha = 0.7
+
+        questionView.layer.cornerRadius = 20
+        questionView.layer.masksToBounds = true
+
+        questionTF.layer.cornerRadius = 10
+        questionTF.layer.masksToBounds = true
+
         switch type {
         case .english:
             self.view.addBackground(imageName: "background3", contentMode: .scaleAspectFit)
             self.questionView.backgroundColor = UIColor("#f1dda499")
             self.setBtnImgs(type: "eng")
+            self.indicatorView.backgroundColor = UIColor("#f1dda499")
         case .math:
             self.view.addBackground(imageName: "background4", contentMode: .scaleAspectFit)
             self.questionView.backgroundColor = UIColor("#c2de9c99")
             self.setBtnImgs(type: "math")
+            self.indicatorView.backgroundColor = UIColor("#c2de9c99")
         case .science:
             self.view.addBackground(imageName: "background5", contentMode: .scaleAspectFit)
             self.questionView.backgroundColor = UIColor("#c5c9f399")
             self.setBtnImgs(type: "science")
+            self.indicatorView.backgroundColor = UIColor("#c5c9f399")
         case .toefl:
             self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFit)
             self.questionView.backgroundColor = UIColor("#a7cdee99")
             self.setBtnImgs(type: "toefl")
+            self.indicatorView.backgroundColor = UIColor("#a7cdee99")
         default:
             break
         }
     }
 
     func setBtnImgs(type : String) {
-        self.backBtn.setImage(UIImage(named: "\(type)BtnBack"), for: .normal)
-        self.backBtn.setImage(UIImage(named: "\(type)BtnBackPressed"), for: .highlighted)
-
-        self.historyBtn.setImage(UIImage(named: "\(type)BtnHistory"), for: .normal)
-        self.historyBtn.setImage(UIImage(named: "\(type)BtnHistoryPressed"), for: .highlighted)
-
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .normal)
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .highlighted)
 
         self.imageBtn.setImage(UIImage(named: "\(type)BtnImg"), for: .normal)
         self.imageBtn.setImage(UIImage(named: "\(type)BtnImgPressed"), for: .highlighted)
@@ -123,17 +114,21 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
 
-    @objc func keyboardWillShow(_ notification: NSNotification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            self.buttomConstraint.constant = keyboardHeight
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        self.buttomConstraint.constant = 30
-
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
     }
 
     @IBAction func imgPressed(_ sender: Any) {
@@ -150,6 +145,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
                 return
             }
         }))
+
         alert.addAction(UIAlertAction(title: "upload", style: .default, handler: {action in
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
                 let imagePicker = UIImagePickerController()
@@ -169,114 +165,36 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
 
-    @IBAction func filePressed(_ sender: Any) {
-
-    }
-
-    @IBAction func backPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
-
-
-    @IBAction func send(_ sender: Any) {
-        if (questionTF.text?.isEmpty)!{
-            ViewHelper.showToastMessage(message: "There is nothing to send")
-        }else{
-            var typeString = String()
-            switch type {
-            case .english:
-                typeString = "english"
-            case .math:
-                typeString = "math"
-            case .science:
-                typeString = "science"
-            case .toefl:
-                typeString = "toefl"
-            default:
-                break
+    @IBAction func sendQuestion(_ sender: Any) {
+        sendBtn.isEnabled = false
+        let defaults = UserDefaults()
+        if (defaults.object(forKey: "StudentData") != nil){
+            let stdData = defaults.object(forKey: "StudentData") as! Student
+            if (questionTF.text?.isEmpty)!{
+                ViewHelper.showToastMessage(message: "enter the question first")
+                sendBtn.isEnabled = true
+            }else{
+                messageHelper.sendQuestion(studentId: stdData.phone, message: questionTF.text!, type: type.toString)
             }
-            messageHelper.sendMessage(teacherID: "09000000001", studentID: "09000000002", message: questionTF.text!, type: typeString)
-            questionTF.text = ""
+        }else{
+            ViewHelper.showToastMessage(message: "please try to login first!")
+            sendBtn.isEnabled = true
         }
     }
 
     func sendMessageSuccessfully() {
-        getMessages()
+        questionTF.text = ""
+
+        sendBtn.isEnabled = true
+
+        questionView.isHidden = true
+        indicatorView.isHidden = false
     }
 
     func sendMessageUnsuccessfully(error: String) {
+        sendBtn.isEnabled = true
+
         ViewHelper.showToastMessage(message: error)
     }
-
-    @objc func getMessages(){
-        messageHelper.getMessage(teacherID: "09000000001", studentID: "09000000002")
-    }
-
-    func getMessagesSuccessfully(messages: [Message]) {
-
-        if messages.count > numOfCurrentMessages{
-            self.messagesCollectionView.isHidden = false
-            self.messages = messages
-
-//            let indexPaths = Array(numOfCurrentMessages..<messages.count).map { IndexPath(item: $0, section: 0) }
-//
-//            messagesCollectionView.performBatchUpdates({
-//                messagesCollectionView.insertItems(at: indexPaths)
-//            }, completion: nil)
-
-            messagesCollectionView.reloadData()
-            messagesCollectionView.scrollToItem(at: IndexPath(item: messages.count-1, section: 0), at: .top, animated: true)
-            numOfCurrentMessages = messages.count
-        }
-    }
-
-    func getMessagesUnsuccessfully(error: String) {
-        ViewHelper.showToastMessage(message: error)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
-    }
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "messageCell", for: indexPath) as! MessageCVC
-        let message = messages[indexPath.row]
-        cell.messageLbl.text = message.message
-        cell.nameLbl.text = message.name
-        cell.timeLbl.text = message.time
-
-        switch type {
-        case .english:
-            cell.nameLbl.textColor = UIColor("#66320F99")
-            cell.timeLbl.textColor = UIColor("#AF371699")
-        case .math:
-            cell.nameLbl.textColor = UIColor("#455D2099")
-            cell.timeLbl.textColor = UIColor("#95C45799")
-        case .science:
-            cell.nameLbl.textColor = UIColor("#47184C99")
-            cell.timeLbl.textColor = UIColor("#66408A99")
-        case .toefl:
-            cell.nameLbl.textColor = UIColor("#1C3E5C99")
-            cell.timeLbl.textColor = UIColor("#175D9999")
-        default:
-            break
-        }
-        cell.layer.opacity = 1
-        return cell
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

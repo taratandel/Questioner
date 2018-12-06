@@ -22,9 +22,10 @@ class SignUpVC: UIViewController, UserDelegate {
     @IBOutlet weak var pass: UITextField!
     @IBOutlet weak var repeatpass: UITextField!
     @IBOutlet weak var email: UITextField!
+    @IBOutlet weak var signUpBtn: UIButton!
 
     @IBOutlet weak var indic: UIActivityIndicatorView!
-    var userHelper = UserDefaultHelper()
+    var userHelper = UserHelper()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.indic.isHidden = true
@@ -64,6 +65,7 @@ class SignUpVC: UIViewController, UserDelegate {
         // Dispose of any resources that can be recreated.
     }
     @IBAction func signUpPressed(_ sender: Any) {
+        signUpBtn.isEnabled = false
         if phoneNumber.text?.count == 11 && phoneNumber.text != nil && email.text != nil && name.text != nil {
             if pass.text != nil && repeatpass.text != nil && pass.text == repeatpass.text {
 
@@ -75,20 +77,20 @@ class SignUpVC: UIViewController, UserDelegate {
                 ViewHelper.showToastMessage(message: "Passwords should match")
             }
         } else {
-
             ViewHelper.showToastMessage(message: "All fields are required")
         }
-
     }
-    func userLoggedIn() {
+    func successfulOperation() {
+        signUpBtn.isEnabled = true
+
         self.indic.isHidden = true
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: "Signed UP Succesfully")
-
-        //indicator
-        //segue
+        navigationController?.popViewController(animated: true)
     }
-    func userCouldNotLoggedIn(error: String) {
+    func unsuccessfulOperation(error: String) {
+        signUpBtn.isEnabled = true
+        
         self.indic.isHidden = true
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: error)

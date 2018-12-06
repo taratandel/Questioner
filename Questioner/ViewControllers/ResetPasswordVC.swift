@@ -16,8 +16,9 @@ class ResetPasswordVC: UIViewController, UserDelegate {
     @IBOutlet weak var password1TF: UITextField!
     @IBOutlet weak var password2TF: UITextField!
     @IBOutlet weak var indic: UIActivityIndicatorView!
-    
-    var userHelper = UserDefaultHelper()
+    @IBOutlet weak var resetBtn: UIButton!
+
+    var userHelper = UserHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +49,10 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func Register(_ sender: Any) {
+
+    @IBAction func reset(_ sender: Any) {
+        resetBtn.isEnabled = false
+
         if password1TF.text != nil && password1TF.text?.count == 11 && password2TF != nil {
             self.indic.isHidden = false
             indic.startAnimating()
@@ -60,13 +64,18 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         }
         
     }
-    func userLoggedIn() {
+    func successfulOperation() {
+        resetBtn.isEnabled = true
+
         self.indic.isHidden = true
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: "Reset successfuly")
-        // indicator segue
+        navigationController?.popViewController(animated: true)
     }
-    func userCouldNotLoggedIn(error: String) {
+
+    func unsuccessfulOperation(error: String) {
+        resetBtn.isEnabled = true
+        
         self.indic.isHidden = true
 
         self.indic.stopAnimating()

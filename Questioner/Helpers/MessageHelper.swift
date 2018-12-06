@@ -15,12 +15,19 @@ import SwiftyJSON
 
     @objc optional func getMessagesSuccessfully(messages: [Message])
     @objc optional func getMessagesUnsuccessfully(error: String)
+
+    @objc optional func getConversationsSuccessfully(conversations: [Conversation])
+    @objc optional func getConversationsUnsuccessfully(error: String)
+
+    @objc optional func sendRateSuccessfully()
+    @objc optional func sendRateUnsuccessfully(error: String)
+
 }
 class MessageHelper {
     var delegate: MessageDelegate!
 
-    func sendMessage(teacherID: String, studentID: String, message: String, type: String) {
-        let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
+    func sendMessage(conversationId: String, message: String, type: String) {
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
 
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_MSG, lstParam: lstParams, onCompletion: {
             response, status in
@@ -36,9 +43,25 @@ class MessageHelper {
         })
     }
 
-    func sendImgMessage(teacherID: String, studentID: String, message: String, type: String, image: UIImage) {
+    func sendRate(teacherId: String, rate: Float) {
+        let lstParams: [String: AnyObject] = ["teacherId": teacherId as AnyObject, "rate": rate as AnyObject]
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_RATE, lstParam: lstParams, onCompletion: {
+            response, status in
+            if status {
+                if self.delegate.responds (to: #selector(MessageDelegate.sendRateSuccessfully)){
+                    self.delegate!.sendRateSuccessfully!()
+                }
+            } else {
+                if self.delegate.responds (to: #selector(MessageDelegate.sendRateUnsuccessfully(error:))){
+                    self.delegate!.sendRateUnsuccessfully!(error: JSON(response).stringValue)
+                }
+            }
+        })
+    }
+    func sendImgMessage(conversationId: String, message: String, type: String, image: UIImage) {
         let imageData = UIImageJPEGRepresentation(image, 1)
-        let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
+
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_IMG, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
@@ -53,8 +76,8 @@ class MessageHelper {
         })
     }
 
-    func sendFileMessage(teacherID: String, studentID: String, message: String, type: String) {
-        let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
+    func sendFileMessage(conversationId: String, message: String, type: String) {
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_FILE, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
@@ -69,8 +92,8 @@ class MessageHelper {
         })
     }
 
-    func getMessage(teacherID: String, studentID: String) {
-        let lstParams: [String: AnyObject] = ["teacherId": teacherID as AnyObject, "studentId": studentID as AnyObject]
+    func getMessage(conversationId: String) {
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.GET_MSG, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
@@ -89,6 +112,42 @@ class MessageHelper {
         })
     }
 
+    func getConversation(studentId: String) {
+        let lstParams: [String: AnyObject] = ["studentId": studentId as AnyObject]
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.GET_CONVS, lstParam: lstParams, onCompletion: {
+            response, status in
+            if status {
+                var conversations = [Conversation]()
+                let msg = JSON(response["conversations"])
+                conversations = Conversation.buildList(jsonData: msg)
+
+                if self.delegate.responds (to: #selector(MessageDelegate.getConversationsSuccessfully)){
+                    self.delegate!.getConversationsSuccessfully!(conversations: conversations)
+                }
+            } else {
+                if self.delegate.responds (to: #selector(MessageDelegate.getConversationsUnsuccessfully(error:))){
+                    self.delegate!.getConversationsUnsuccessfully!(error: JSON(response).stringValue)
+                }
+            }
+        })
+    }
+
+    func sendQuestion(studentId: String, message: String, type: String) {
+        let lstParams: [String: AnyObject] = ["studentId": studentId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
+
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_Q, lstParam: lstParams, onCompletion: {
+            response, status in
+            if status {
+                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageSuccessfully)){
+                    self.delegate!.sendMessageSuccessfully!()
+                }
+            } else {
+                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageUnsuccessfully(error:))){
+                    self.delegate!.sendMessageUnsuccessfully!(error: JSON(response).stringValue)
+                }
+            }
+        })
+    }
 
     
 }

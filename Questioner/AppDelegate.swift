@@ -8,16 +8,83 @@
 
 import UIKit
 import CoreData
+import Firebase
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+
+        let dataDict: [String: String] = ["token": fcmToken, "deviceId": UUID().uuidString, "deviceName": UIDevice.current.name]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        FirebaseApp.configure()
+
+        Messaging.messaging().delegate = self as? MessagingDelegate
+
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: { _, _ in })
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+
+        application.registerForRemoteNotifications()
+
         return true
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification response: [AnyHashable: Any]) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        // TODO: Handle data of notification
+
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+
+        // Print message ID.
+        guard
+            let data = response[AnyHashable("data")] as? NSDictionary,
+            let conversationId = data["conversationId"] as? String,
+            let questionType = data["questionType"] as? String
+            else {
+                // handle any error here
+                return
+        }
+
+        let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
+        chatVC.conversationId = conversationId
+        switch questionType {
+        case "science":
+            chatVC.type = .science
+        case "math":
+            chatVC.type = .math
+        case "english":
+            chatVC.type = .english
+        case "toefl":
+            chatVC.type = .toefl
+        default:
+            break
+        }
+        
+        self.window?.rootViewController = chatVC
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -58,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
+
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.

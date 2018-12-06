@@ -17,6 +17,8 @@ class Message: NSObject {
     var isTeacher = false
     var image = ""
     var file = ""
+    var isEnd = false
+    var teacherId = ""
 
     class func buildSingle(jsonData: JSON) -> Message {
         let message = Message()
@@ -50,6 +52,8 @@ class Message: NSObject {
         if jsonData["image"].exists(){
             message.image = jsonData["image"].stringValue
         }
+        message.isEnd = jsonData["isEnd"].boolValue
+        message.teacherId = jsonData["teacherId"].stringValue
         return message
 
     }

@@ -9,6 +9,8 @@
 import UIKit
 
 class LogoVC: UIViewController {
+    let defaults = UserDefaults()
+    let userHelper = UserHelper()
 
     @IBOutlet weak var logoView: UIView!
     override func viewDidLoad() {
@@ -29,7 +31,54 @@ class LogoVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         sleep(3)
-        self.performSegue(withIdentifier: "AfterLogoSegue", sender: self)
+
+        if (defaults.object(forKey: "StudentData") != nil){
+            let stdData = defaults.object(forKey: "StudentData") as! Student
+
+            if stdData.active{
+                let stdPhone = stdData.phone
+                let (isChatting, conversationId, chatType) = userHelper.isChatting(phone: stdPhone)
+                let (isQuestioning, questionType) = userHelper.isQuestioning(phone: stdPhone)
+
+                if isChatting {
+                    let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
+                    chatVC.conversationId = conversationId
+                    switch chatType {
+                    case "science":
+                        chatVC.type = .science
+                    case "math":
+                        chatVC.type = .math
+                    case "english":
+                        chatVC.type = .english
+                    case "toefl":
+                        chatVC.type = .toefl
+                    default:
+                        break
+                    }
+                    SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chatVC)
+                } else if isQuestioning {
+                    let sendQVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "SendQuestionVC") as! SendQuestionVC
+                    switch questionType {
+                    case "science":
+                        sendQVC.type = .science
+                    case "math":
+                        sendQVC.type = .math
+                    case "english":
+                        sendQVC.type = .english
+                    case "toefl":
+                        sendQVC.type = .toefl
+                    default:
+                        break
+                    }
+                    sendQVC.isSearching = true
+                    SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQVC)
+                } else{
+                    self.performSegue(withIdentifier: "AfterLogoSegue", sender: self)
+                }
+            }else{
+                ViewHelper.showToastMessage(message: "your account isn't active")
+            }
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

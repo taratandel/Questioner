@@ -65,7 +65,7 @@ class WelcomeVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if UserDefaultHelper.isAppAlreadyLaunchedOnce(){
+        if UserHelper.isAppAlreadyLaunchedOnce(){
             self.performSegue(withIdentifier: "AfterIntroSegue", sender: self)
         } else{
             introScrollView.isHidden = false
