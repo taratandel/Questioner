@@ -2,7 +2,7 @@
 //  urls.swift
 //  Questioner
 //
-//  Created by negar on 1/20/1397 AP.
+//  Created by Tara Tandel on 1/20/1397 AP.
 //  Copyright © 1397 negar. All rights reserved.
 //
 
@@ -16,16 +16,15 @@ class URLHelper : NSObject {
     static let SEND_MSG = "chat/send/"
     static let GET_MSG = "chat/get/"
     static let SEND_IMG = "chat/sendimage/"
-    //static let SEND_FILE = "chat/sendfile/"
-    static let SEND_VOICE = "chat/sendfile/"
-    static let GET_CONVS = "chat/getconversations/"
-    static let SEND_RATE = "chat/rate/"
+    static let SEND_FILE = "chat/sendfile/"
+    static let GET_CONVS = ""
+    static let SEND_RATE = ""
 
 
-    static let SEND_Q = "chat/sendquestion/"
+    static let SEND_Q = ""
 
-    static let SEND_TOKEN = "soal/setfcmtoken/"
-    static let IS_CHATTING = "chat/ischatting/"
-    static let IS_QUESTIONING = "chat/isquestioning/"
-    static let IS_FREE_TRIAL = "soal/isfreetrial/"
+    static let SEND_TOKEN = ""
+    static let IS_CHATTING = ""
+    static let IS_QUESTIONING = ""
+    static let IS_FREE_TRIAL = ""
 }
