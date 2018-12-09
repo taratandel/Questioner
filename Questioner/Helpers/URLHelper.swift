@@ -17,14 +17,14 @@ class URLHelper : NSObject {
     static let GET_MSG = "chat/get/"
     static let SEND_IMG = "chat/sendimage/"
     static let SEND_FILE = "chat/sendfile/"
-    static let GET_CONVS = ""
-    static let SEND_RATE = ""
+    static let GET_CONVS = "chat/getconversations/"
+    static let SEND_RATE = "chat/rate/"
 
 
-    static let SEND_Q = ""
+    static let SEND_Q = "chat/sendquestion/"
 
-    static let SEND_TOKEN = ""
-    static let IS_CHATTING = ""
-    static let IS_QUESTIONING = ""
-    static let IS_FREE_TRIAL = ""
+    static let SEND_TOKEN = "soal/setfcmtoken/"
+    static let IS_CHATTING = "chat/ischatting/"
+    static let IS_QUESTIONING = "chat/isquestioning/"
+    static let IS_FREE_TRIAL = "soal/isfreetrial/"
 }

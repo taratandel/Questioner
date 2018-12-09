@@ -53,6 +53,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
         application.registerForRemoteNotifications()
 
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "StudentData") != nil){
+            let stdData = defaults.object(forKey: "StudentData") as! Student
+
+            if stdData.active{
+                let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC") as! ChooseCategoryVC
+                self.window?.rootViewController = chooseCategoryVC
+            }else{
+                ViewHelper.showToastMessage(message: "your account isn't active.")
+                let logoVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "LogoVC") as! LogoVC
+                self.window?.rootViewController = logoVC
+            }
+        }else{
+            let logoVc = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "LogoVC") as! LogoVC
+            self.window?.rootViewController = logoVc
+        }
         return true
     }
 
