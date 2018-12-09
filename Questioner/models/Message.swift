@@ -19,6 +19,7 @@ class Message: NSObject {
     var file = ""
     var isEnd = false
     var teacherId = ""
+    var messageType = 0
 
     class func buildSingle(jsonData: JSON) -> Message {
         let message = Message()
@@ -54,6 +55,7 @@ class Message: NSObject {
         }
         message.isEnd = jsonData["isEnd"].boolValue
         message.teacherId = jsonData["teacherId"].stringValue
+        message.messageType = jsonData["messageType"].intValue
         return message
 
     }

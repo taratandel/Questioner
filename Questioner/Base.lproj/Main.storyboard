@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j1A-B3-1B4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yRu-8X-7mX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -496,7 +496,6 @@
         <!--ChatVC-->
         <scene sceneID="Q5T-6M-Lej">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6Dy-Iq-kg0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="ChatVC" id="j1A-B3-1B4" customClass="ChatVC" customModule="Questioner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YpT-b7-72h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -752,6 +751,7 @@
                         <outlet property="sendBtn" destination="exe-e9-gu0" id="qJi-2H-XrL"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Dy-Iq-kg0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6764" y="31.934032983508249"/>
         </scene>
@@ -1197,7 +1197,7 @@
         <!--LogoVC-->
         <scene sceneID="0el-Og-9de">
             <objects>
-                <viewController id="yRu-8X-7mX" customClass="LogoVC" customModule="Questioner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LogoVC" id="yRu-8X-7mX" customClass="LogoVC" customModule="Questioner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="znf-er-Cs0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -43,7 +43,7 @@ class UserHelper {
         let lstParams: [String: AnyObject] = ["phone": phone as AnyObject]
         var isQuestioning : Bool = false
         var questionType = ""
-        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_CHATTING, lstParam: lstParams){
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_QUESTIONING, lstParam: lstParams){
             response, status in
             if status{
                 let data = JSON(response["message"])
@@ -74,7 +74,7 @@ class UserHelper {
     func isFreeTrial(phone: String) -> Bool{
         let lstParams: [String: AnyObject] = ["phone": phone as AnyObject]
         var isFreeTrial : Bool = false
-        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_CHATTING, lstParam: lstParams){
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_FREE_TRIAL, lstParam: lstParams){
             response, status in
             if status{
                 isFreeTrial = JSON(response["message"]).boolValue

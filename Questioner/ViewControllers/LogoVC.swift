@@ -9,7 +9,7 @@
 import UIKit
 
 class LogoVC: UIViewController {
-    let defaults = UserDefaults()
+    let defaults = UserDefaults.standard
     let userHelper = UserHelper()
 
     @IBOutlet weak var logoView: UIView!
@@ -34,12 +34,10 @@ class LogoVC: UIViewController {
 
         if (defaults.object(forKey: "StudentData") != nil){
             let stdData = defaults.object(forKey: "StudentData") as! Student
-
             if stdData.active{
                 let stdPhone = stdData.phone
                 let (isChatting, conversationId, chatType) = userHelper.isChatting(phone: stdPhone)
                 let (isQuestioning, questionType) = userHelper.isQuestioning(phone: stdPhone)
-
                 if isChatting {
                     let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
                     chatVC.conversationId = conversationId
@@ -78,6 +76,8 @@ class LogoVC: UIViewController {
             }else{
                 ViewHelper.showToastMessage(message: "your account isn't active")
             }
+        }else {
+            self.performSegue(withIdentifier: "AfterLogoSegue", sender: self)
         }
     }
     override func didReceiveMemoryWarning() {

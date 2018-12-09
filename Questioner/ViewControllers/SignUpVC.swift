@@ -75,9 +75,11 @@ class SignUpVC: UIViewController, UserDelegate {
                 userHelper.signup(userName: name.text!, password: pass.text!, phone: phoneNumber.text!, email: email.text!)
             }else {
                 ViewHelper.showToastMessage(message: "Passwords should match")
+                signUpBtn.isEnabled = true
             }
         } else {
             ViewHelper.showToastMessage(message: "All fields are required")
+            signUpBtn.isEnabled = true
         }
     }
     func successfulOperation() {

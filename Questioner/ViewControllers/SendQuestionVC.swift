@@ -167,7 +167,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBAction func sendQuestion(_ sender: Any) {
         sendBtn.isEnabled = false
-        let defaults = UserDefaults()
+        let defaults = UserDefaults.standard
         if (defaults.object(forKey: "StudentData") != nil){
             let stdData = defaults.object(forKey: "StudentData") as! Student
             if (questionTF.text?.isEmpty)!{
