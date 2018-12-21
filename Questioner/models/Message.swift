@@ -27,6 +27,7 @@ class Message: NSObject {
     var isEnd = false
     var conversationId = ""
 
+
     class func buildSingle(jsonData: JSON) -> Message {
         let BASE_URL = "http://178.63.114.19:2020/media/"
         
