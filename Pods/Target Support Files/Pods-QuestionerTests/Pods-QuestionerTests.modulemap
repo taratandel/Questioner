@@ -1,0 +1,6 @@
+framework module Pods_QuestionerTests {
+  umbrella header "Pods-QuestionerTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
