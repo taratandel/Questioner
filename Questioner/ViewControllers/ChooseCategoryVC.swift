@@ -19,7 +19,7 @@ class ChooseCategoryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
 
         mathBtn.setImage(UIImage(named:"typeBtnPressed1"), for: .highlighted)
         scienceBtn.setImage(UIImage(named:"typeBtnPressed2"), for: .highlighted)

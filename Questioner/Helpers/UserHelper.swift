@@ -12,8 +12,9 @@ import Firebase
 
 @objc protocol UserDelegate: NSObjectProtocol {
     @objc optional func successfulOperation()
+    @objc optional func successfulTrial(isFreeTrial: Bool)
+    @objc optional func successfulStatusUpdate(isQuestioning: Bool, isChatting: Bool, questionType: String, conversationId: String)
     @objc optional func unsuccessfulOperation(error: String)
-
 }
 class UserHelper {
     //let coreDataHelper = CoreDataHelper()
@@ -39,48 +40,66 @@ class UserHelper {
         }
     }
 
-    func isQuestioning(phone: String) -> (Bool, String){
+    func isChattingOrQuestioning(phone: String){
         let lstParams: [String: AnyObject] = ["phone": phone as AnyObject]
-        var isQuestioning : Bool = false
-        var questionType = ""
-        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_QUESTIONING, lstParam: lstParams){
-            response, status in
-            if status{
-                let data = JSON(response["message"])
-                isQuestioning = data["isQuestioning"].boolValue
-                questionType = data["questionType"].stringValue
-            }
-        }
-        return (isQuestioning,questionType)
-    }
-
-    func isChatting(phone: String) -> (Bool, String, String){
-        let lstParams: [String: AnyObject] = ["phone": phone as AnyObject]
-        var isChatting : Bool = false
-        var conversationId : String = ""
-        var questionType : String = ""
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_CHATTING, lstParam: lstParams){
             response, status in
             if status{
                 let data = JSON(response["message"])
-                isChatting = data["isChatting"].boolValue
-                conversationId = data["conversationId"].stringValue
-                questionType = data["questionType"].stringValue
+                let isChatting = data["isChatting"].boolValue
+                let conversationId = data["conversationId"].stringValue
+                let questionType = data["questionType"].stringValue
+                if isChatting{
+                    if self.delegate.responds (to: #selector(UserDelegate.successfulStatusUpdate)) {
+                        self.delegate!.successfulStatusUpdate!(isQuestioning: false, isChatting: true, questionType: questionType, conversationId: conversationId)
+                    }
+                }else{
+                    AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_QUESTIONING, lstParam: lstParams){
+                        response, status in
+                        if status{
+                            let data = JSON(response["message"])
+                            let isQuestioning = data["isQuestioning"].boolValue
+                            let questionType = data["questionType"].stringValue
+                            if isQuestioning{
+                                if self.delegate.responds (to: #selector(UserDelegate.successfulStatusUpdate)) {
+                                    self.delegate!.successfulStatusUpdate!(isQuestioning: true, isChatting: false, questionType: questionType, conversationId: "")
+                                }
+                            }else{
+                                if self.delegate.responds (to: #selector(UserDelegate.successfulStatusUpdate)) {
+                                    self.delegate!.successfulStatusUpdate!(isQuestioning: false, isChatting: false, questionType: "", conversationId: "")
+                                }
+                            }
+                        }else{
+                            if self.delegate.responds(to: #selector(UserDelegate.unsuccessfulOperation(error:))) {
+                                self.delegate!.unsuccessfulOperation!(error: JSON(response).stringValue)
+                            }
+                        }
+                    }
+                }
+            } else {
+                if self.delegate.responds(to: #selector(UserDelegate.unsuccessfulOperation(error:))) {
+                    self.delegate!.unsuccessfulOperation!(error: JSON(response).stringValue)
+                }
+
             }
         }
-        return (isChatting, conversationId, questionType)
     }
 
-    func isFreeTrial(phone: String) -> Bool{
+    func isFreeTrial(phone: String){
         let lstParams: [String: AnyObject] = ["phone": phone as AnyObject]
-        var isFreeTrial : Bool = false
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.IS_FREE_TRIAL, lstParam: lstParams){
             response, status in
             if status{
-                isFreeTrial = JSON(response["message"]).boolValue
+                let isFreeTrial = JSON(response["message"]).boolValue
+                if self.delegate.responds (to: #selector(UserDelegate.successfulTrial)) {
+                    self.delegate!.successfulTrial!(isFreeTrial: isFreeTrial)
+                }
+            } else {
+                if self.delegate.responds(to: #selector(UserDelegate.unsuccessfulOperation(error:))) {
+                    self.delegate!.unsuccessfulOperation!(error: JSON(response).stringValue)
+                }
             }
         }
-        return isFreeTrial
     }
 
     @objc func setFCMToken(notification: NSNotification) {
@@ -95,14 +114,17 @@ class UserHelper {
 
         defaults.set(token, forKey: "Token")
 
-        if let stdData = defaults.dictionary(forKey: "StudentData") {
-            let lstParams: [String: AnyObject] = ["phone": stdData["phone"] as AnyObject, "fcmToken": token as AnyObject]
-            AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_TOKEN, lstParam: lstParams) {
-                response, status in
-                if status {
-                    success = true
-                } else {
-                    success = false
+        if defaults.object(forKey: "StudentData") != nil {
+            let decoder = try? JSONDecoder().decode(Student.self, from: defaults.object(forKey: "StudentData") as! Data)
+            if let stdPhone = decoder?.phone {
+                let lstParams: [String: AnyObject] = ["phone": stdPhone as AnyObject, "fcmToken": token as AnyObject]
+                AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_TOKEN, lstParam: lstParams) {
+                    response, status in
+                    if status {
+                        success = true
+                    } else {
+                        success = false
+                    }
                 }
             }
         } else {
@@ -127,7 +149,10 @@ class UserHelper {
 
                 let data = JSON(response["message"])
                 let stdData = Student.buildSingle(jsonData: data)
-                self.defaults.set(stdData, forKey: "StudentData")
+                let encoder = JSONEncoder()
+                if let studentData = try? encoder.encode(stdData) {
+                    UserDefaults.standard.set(studentData, forKey: "StudentData")
+                }
 
                 if self.delegate.responds (to: #selector(UserDelegate.successfulOperation)) {
                     self.delegate!.successfulOperation!()

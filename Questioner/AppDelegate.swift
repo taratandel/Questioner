@@ -12,24 +12,29 @@ import Firebase
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
 
+
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
 
-        let dataDict: [String: String] = ["token": fcmToken, "deviceId": UUID().uuidString, "deviceName": UIDevice.current.name]
+        let dataDict: [String: String] = ["token": fcmToken, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "deviceName": UIDevice.current.name]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
 
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
         FirebaseApp.configure()
 
-        Messaging.messaging().delegate = self as? MessagingDelegate
+        Messaging.messaging().delegate = self
 
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
@@ -47,22 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         application.registerForRemoteNotifications()
 
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "StudentData") != nil){
-            let stdData = defaults.object(forKey: "StudentData") as! Student
-
-            if stdData.active{
-                let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC") as! ChooseCategoryVC
-                self.window?.rootViewController = chooseCategoryVC
-            }else{
-                ViewHelper.showToastMessage(message: "your account isn't active.")
-                let logoVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "LogoVC") as! LogoVC
-                self.window?.rootViewController = logoVC
-            }
-        }else{
-            let logoVc = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "LogoVC") as! LogoVC
-            self.window?.rootViewController = logoVc
-        }
         return true
     }
 
@@ -76,9 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Print message ID.
         guard
-            let data = response[AnyHashable("data")] as? NSDictionary,
-            let conversationId = data["conversationId"] as? String,
-            let questionType = data["questionType"] as? String
+            let conversationId = response[AnyHashable("conversationId")] as? String,
+            let questionType = response[AnyHashable("questionType")] as? String
             else {
                 // handle any error here
                 return

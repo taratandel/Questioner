@@ -43,8 +43,8 @@ class MessageHelper {
         })
     }
 
-    func sendRate(teacherId: String, rate: Float) {
-        let lstParams: [String: AnyObject] = ["teacherId": teacherId as AnyObject, "rate": rate as AnyObject]
+    func sendRate(teacherId: String, rate: Float, conversationId: String) {
+        let lstParams: [String: AnyObject] = ["teacherId": teacherId as AnyObject, "rate": rate as AnyObject, "conversationId": conversationId as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_RATE, lstParam: lstParams, onCompletion: {
             response, status in
             if status {

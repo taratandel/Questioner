@@ -13,7 +13,7 @@ class LoginOrSignUpVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
 
         // Do any additional setup after loading the view.
     }

@@ -15,6 +15,7 @@ class Conversation: NSObject {
     var conversationId = ""
     var questionType = ""
     var isEnd = false
+    var isRated = false
 
     class func buildSingle(jsonData: JSON) -> Conversation {
         let conversation = Conversation()

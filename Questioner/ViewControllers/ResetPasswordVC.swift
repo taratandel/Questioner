@@ -21,10 +21,13 @@ class ResetPasswordVC: UIViewController, UserDelegate {
     var userHelper = UserHelper()
     
     override func viewDidLoad() {
+
+        self.hideKeyboardWhenTappedAround()
+        
         super.viewDidLoad()
         self.indic.isHidden = true
         self.userHelper.delegate = self
-        self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFill)
         
         password1View.layer.cornerRadius = password1View.frame.height / 2;
         password1View.clipsToBounds = true

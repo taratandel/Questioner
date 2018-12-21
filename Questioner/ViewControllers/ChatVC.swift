@@ -38,15 +38,18 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     var messages = [Message()]
     var numOfCurrentMessages : Int = 0
     var conversationId = ""
+    var isRated = true
 
     var teacherId = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         self.initViews()
         self.initRateView()
+        ratingView.isHidden = true
 
         messageHelper.delegate = self
         floatRatingView.delegate = self
@@ -83,19 +86,19 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
         switch type {
         case .english:
-            self.view.addBackground(imageName: "background3", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background3", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#f1dda499")
             self.setBtnImgs(type: "eng")
         case .math:
-            self.view.addBackground(imageName: "background4", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background4", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#c2de9c99")
             self.setBtnImgs(type: "math")
         case .science:
-            self.view.addBackground(imageName: "background5", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background5", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#c5c9f399")
             self.setBtnImgs(type: "science")
         case .toefl:
-            self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#a7cdee99")
             self.setBtnImgs(type: "toefl")
         default:
@@ -122,7 +125,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
         self.floatRatingView.emptyImage = #imageLiteral(resourceName: "emptyStar")
         self.floatRatingView.fullImage = #imageLiteral(resourceName: "fullStar")
-        self.floatRatingView.contentMode = .scaleAspectFit
+        self.floatRatingView.contentMode = .scaleAspectFill
         self.floatRatingView.maxRating = 5
         self.floatRatingView.minRating = 0
         self.floatRatingView.editable = true
@@ -148,16 +151,16 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
+            if self.questionView.frame.origin.y == 0{
+                self.questionView.frame.origin.y -= keyboardSize.height
             }
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
+            if self.questionView.frame.origin.y != 0{
+                self.questionView.frame.origin.y += keyboardSize.height
             }
         }
     }
@@ -261,7 +264,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
             messagesCollectionView.scrollToItem(at: IndexPath(item: messages.count-1, section: 0), at: .top, animated: true)
             numOfCurrentMessages = messages.count
 
-            if (messages.last?.isEnd)!{
+            if (messages.last?.isEnd)! && !isRated{
                 self.teacherId = (messages.last?.teacherId)!
                 self.ratingView.isHidden = false
             }
@@ -317,7 +320,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     @IBAction func sendRate(_ sender: Any) {
         rateConfirmBtn.isEnabled = false
-        messageHelper.sendRate(teacherId: self.teacherId, rate: floatRatingView.rating)
+        messageHelper.sendRate(teacherId: self.teacherId, rate: floatRatingView.rating, conversationId: self.conversationId)
     }
 
     func sendRateSuccessfully() {

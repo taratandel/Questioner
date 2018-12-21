@@ -33,13 +33,13 @@ class SignUpVC: UIViewController, UserDelegate {
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
 
-        self.conditionsView.addBackground(imageName: "background3", contentMode: .scaleToFill)
+        self.conditionsView.addBackground(imageName: "background3", contentMode: .scaleAspectFill)
 
     }
 
 
     @IBAction func acceptBtnPressed(_ sender: Any) {
-        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
 
         self.editView(viewToEdit: nameView)
         self.editView(viewToEdit: emailView)

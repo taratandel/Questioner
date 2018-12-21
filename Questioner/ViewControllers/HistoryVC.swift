@@ -13,18 +13,27 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
     let defaults = UserDefaults.standard
     let messageHelper = MessageHelper()
 
+    @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var conversationsTable: UITableView!
     var conversations = [Conversation()]
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
+        self.backBtn.setImage(UIImage(named: "mathBtnBack"), for: .normal)
+        self.backBtn.setImage(UIImage(named: "mathBtnBackPressed"), for: .highlighted)
+        self.backBtn.addTarget(self, action: #selector(backBtnPressed), for: .touchUpInside)
+
+        indicator.startAnimating()
         // Do any additional setup after loading the view.
         conversationsTable.delegate = self
         conversationsTable.dataSource = self
         conversationsTable.isHidden = true
 
-        indicator.startAnimating()
+        messageHelper.delegate = self
+
+        self.getConversations()
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,13 +42,17 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
     }
 
     func getConversations() {
-        if (defaults.object(forKey: "StudentData") != nil){
-            let stdData = defaults.object(forKey: "StudentData") as! Student
-            if stdData.active{
-                let stdPhone = stdData.phone
-                messageHelper.getConversation(studentId: stdPhone)
+        if (defaults.object(forKey: "StudentData") != nil) {
+            let decoder = try? JSONDecoder().decode(Student.self, from: defaults.object(forKey: "StudentData") as! Data)
+            if let stdPhone = decoder?.phone,
+                let stdActive = decoder?.active {
+                if stdActive{
+                    messageHelper.getConversation(studentId: stdPhone)
+                }else{
+                    ViewHelper.showToastMessage(message: "your account isn't active.")
+                }
             }else{
-                ViewHelper.showToastMessage(message: "your account isn't active.")
+                ViewHelper.showToastMessage(message: "please login!")
             }
         }else{
             ViewHelper.showToastMessage(message: "please login!")
@@ -72,6 +85,11 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
         cell.conversationId = conversation.conversationId
         cell.isEnd = conversation.isEnd
         cell.questionType = conversation.questionType
+        cell.isRated = conversation.isRated
+
+        cell.layer.cornerRadius = 20
+        cell.layer.opacity = 0.6
+
         return cell
     }
 
@@ -79,6 +97,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
         let cell = tableView.cellForRow(at: indexPath) as! ConversationTVC
         let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
         chatVC.conversationId = cell.conversationId
+        chatVC.isRated = cell.isRated
         switch cell.questionType {
         case "science":
             chatVC.type = .science
@@ -92,9 +111,12 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
             break
         }
         SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chatVC)
-
     }
 
+    @objc func backBtnPressed(){
+        let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
+        SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chooseCategoryVC)
+    }
     /*
     // MARK: - Navigation
 

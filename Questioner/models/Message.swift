@@ -21,6 +21,7 @@ class Message: NSObject {
     var teacherId = ""
     var messageType = 0
 
+
     class func buildSingle(jsonData: JSON) -> Message {
         let message = Message()
         //inja bayad badan esme moalem ro begirimo bezarim

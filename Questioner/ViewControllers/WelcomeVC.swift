@@ -78,7 +78,7 @@ class WelcomeVC: UIViewController {
                 introView.titleLabel.text = introInfo["title"]
                 introView.imageView.image = UIImage(named: introInfo["image"]!)
                 introView.discLbl.text = introInfo["description"]
-                introView.addBackground(imageName: introInfo["background"]!, contentMode: .scaleAspectFit)
+                introView.addBackground(imageName: introInfo["background"]!, contentMode: .scaleAspectFill)
                 
                 introView.nextBtn.setImage(UIImage(named: introInfo["btnImg"]!), for: .normal)
                 introView.nextBtn.setImage(UIImage(named: introInfo["btnPressedImg"]!), for: .highlighted)

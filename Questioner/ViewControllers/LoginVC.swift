@@ -30,7 +30,7 @@ class LoginVC: UIViewController, UserDelegate {
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
 
-        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
 
         usernameView.layer.cornerRadius = usernameView.frame.height / 2;
         usernameView.clipsToBounds = true
@@ -71,67 +71,50 @@ class LoginVC: UIViewController, UserDelegate {
         self.indic.isHidden = true
         self.indic.stopAnimating()
 
-        if (defaults.object(forKey: "StudentData") != nil){
-            let stdData = defaults.object(forKey: "StudentData") as! Student
-
-            if stdData.active{
-                let stdPhone = stdData.phone
-                let (isChatting, conversationId, chatType) = userHelper.isChatting(phone: stdPhone)
-                let (isQuestioning, questionType) = userHelper.isQuestioning(phone: stdPhone)
-
-                if isChatting {
-                    let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
-                    chatVC.conversationId = conversationId
-                    switch chatType {
-                    case "science":
-                        chatVC.type = .science
-                    case "math":
-                        chatVC.type = .math
-                    case "english":
-                        chatVC.type = .english
-                    case "toefl":
-                        chatVC.type = .toefl
-                    default:
-                        break
-                    }
-                    SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chatVC)
-                } else if isQuestioning {
-                    let sendQVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "SendQuestionVC") as! SendQuestionVC
-                    switch questionType {
-                    case "science":
-                        sendQVC.type = .science
-                    case "math":
-                        sendQVC.type = .math
-                    case "english":
-                        sendQVC.type = .english
-                    case "toefl":
-                        sendQVC.type = .toefl
-                    default:
-                        break
-                    }
-                    sendQVC.isSearching = true
-                    SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQVC)
-                } else {
-                    let isFreeTrial = userHelper.isFreeTrial(phone: stdPhone)
-                    if isFreeTrial{
-                        let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
-                        SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chooseCategoryVC)
-                    }else{
-                        let paymentVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "PaymentVC")
-                        SegueHelper.presentViewController(sourceViewController: self, destinationViewController: paymentVC)
-                    }
-                }
-            }else{
-                ViewHelper.showToastMessage(message: "your account isn't active.")
-            }
-        }else{
-            ViewHelper.showToastMessage(message: "please login!")
-        }
+        userHelper.isChattingOrQuestioning(phone: usernameTF.text!)
     }
 
+    func successfulStatusUpdate(isQuestioning: Bool, isChatting: Bool, questionType: String, conversationId: String) {
+        if isChatting {
+            let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
+            chatVC.conversationId = conversationId
+            switch questionType {
+            case "science":
+                chatVC.type = .science
+            case "math":
+                chatVC.type = .math
+            case "english":
+                chatVC.type = .english
+            case "toefl":
+                chatVC.type = .toefl
+            default:
+                break
+            }
+            SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chatVC)
+        } else if isQuestioning {
+            let sendQVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "SendQuestionVC") as! SendQuestionVC
+            switch questionType {
+            case "science":
+                sendQVC.type = .science
+            case "math":
+                sendQVC.type = .math
+            case "english":
+                sendQVC.type = .english
+            case "toefl":
+                sendQVC.type = .toefl
+            default:
+                break
+            }
+            sendQVC.isSearching = true
+            SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQVC)
+        } else{
+            let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
+            SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chooseCategoryVC)
+        }
+    }
     func unsuccessfulOperation(error: String) {
         loginBtn.isEnabled = true
-        
+
         self.indic.isHidden = true
         self.indic.stopAnimating()
         ViewHelper.showToastMessage(message: error)

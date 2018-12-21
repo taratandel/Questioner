@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class Student {
+class Student: Codable {
     var userName = ""
     var password = ""
     var phone = ""
@@ -18,6 +18,16 @@ class Student {
     var profile = ""
     var fcmToken = ""
     var active = true
+
+    enum CodingKeys: String, CodingKey {
+        case userName
+        case password
+        case phone
+        case email
+        case profile
+        case fcmToken
+        case active
+    }
 
     class func buildSingle(jsonData: JSON) -> Student {
         let student = Student()
@@ -28,13 +38,13 @@ class Student {
         student.email = jsonData["email"].stringValue
         student.active = jsonData["active"].boolValue
 
-        if jsonData["profile"].exists(){
+        if jsonData["profile"].exists() {
             student.profile = jsonData["profile"].stringValue
         }
-        if jsonData["fcmToken"].exists(){
+        if jsonData["fcmToken"].exists() {
             student.fcmToken = jsonData["fcmToken"].stringValue
         }
-        
+
         return student
     }
 }

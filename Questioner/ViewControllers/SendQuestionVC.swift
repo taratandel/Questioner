@@ -45,6 +45,9 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initViews()
+        self.hideKeyboardWhenTappedAround()
+
+        messageHelper.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
@@ -80,22 +83,22 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         switch type {
         case .english:
-            self.view.addBackground(imageName: "background3", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background3", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#f1dda499")
             self.setBtnImgs(type: "eng")
             self.indicatorView.backgroundColor = UIColor("#f1dda499")
         case .math:
-            self.view.addBackground(imageName: "background4", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background4", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#c2de9c99")
             self.setBtnImgs(type: "math")
             self.indicatorView.backgroundColor = UIColor("#c2de9c99")
         case .science:
-            self.view.addBackground(imageName: "background5", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background5", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#c5c9f399")
             self.setBtnImgs(type: "science")
             self.indicatorView.backgroundColor = UIColor("#c5c9f399")
         case .toefl:
-            self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFit)
+            self.view.addBackground(imageName: "background2", contentMode: .scaleAspectFill)
             self.questionView.backgroundColor = UIColor("#a7cdee99")
             self.setBtnImgs(type: "toefl")
             self.indicatorView.backgroundColor = UIColor("#a7cdee99")
@@ -168,13 +171,23 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func sendQuestion(_ sender: Any) {
         sendBtn.isEnabled = false
         let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "StudentData") != nil){
-            let stdData = defaults.object(forKey: "StudentData") as! Student
-            if (questionTF.text?.isEmpty)!{
-                ViewHelper.showToastMessage(message: "enter the question first")
-                sendBtn.isEnabled = true
+        if (defaults.object(forKey: "StudentData") != nil) {
+            let decoder = try? JSONDecoder().decode(Student.self, from: defaults.object(forKey: "StudentData") as! Data)
+            if let stdPhone = decoder?.phone,
+                let stdActive = decoder?.active {
+                if stdActive{
+                    if (questionTF.text?.isEmpty)!{
+                        ViewHelper.showToastMessage(message: "enter the question first")
+                        sendBtn.isEnabled = true
+                    }else{
+                        messageHelper.sendQuestion(studentId: stdPhone, message: questionTF.text!, type: type.toString)
+                    }
+                }else{
+                    ViewHelper.showToastMessage(message: "your account isn't active.")
+                }
             }else{
-                messageHelper.sendQuestion(studentId: stdData.phone, message: questionTF.text!, type: type.toString)
+                ViewHelper.showToastMessage(message: "please try to login first!")
+                sendBtn.isEnabled = true
             }
         }else{
             ViewHelper.showToastMessage(message: "please try to login first!")

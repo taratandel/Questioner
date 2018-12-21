@@ -19,7 +19,7 @@ class PaymentVC: UIViewController {
 
         oneOneBtn.isEnabled = false
         oneAllBtn.isEnabled = false
-        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFit)
+        self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
 
         // Do any additional setup after loading the view.
     }
