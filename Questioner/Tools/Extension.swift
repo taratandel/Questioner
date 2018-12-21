@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension UIView {
-    func addBackground(imageName: String = "YOUR DEFAULT IMAGE NAME", contentMode: UIViewContentMode = .scaleAspectFill) {
+    func addBackground(imageName: String = "YOUR DEFAULT IMAGE NAME", contentMode: UIView.ContentMode = .scaleAspectFill) {
         // setup the UIImageView
         let backgroundImageView = UIImageView(frame: UIScreen.main.bounds)
         backgroundImageView.image = UIImage(named: imageName)
@@ -18,7 +18,7 @@ extension UIView {
         backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(backgroundImageView)
-        sendSubview(toBack: backgroundImageView)
+        sendSubviewToBack(backgroundImageView)
         
         // adding NSLayoutConstraints
         let leadingConstraint = NSLayoutConstraint(item: backgroundImageView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0)

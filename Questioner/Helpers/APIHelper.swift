@@ -36,11 +36,14 @@ class AlamofireReq: NSObject {
         }
     }
 
-    func sendPostMPReq(urlString: String, lstParam: [String: AnyObject], image: UIImage, onCompletion: @escaping(JSON, Bool) -> Void) {
+    func sendPostMPReq(urlString: String, lstParam: [String: AnyObject], image: UIImage?, filePath: URL?, onCompletion: @escaping(JSON, Bool) -> Void) {
         let url = BASE_URL + urlString
         Alamofire.upload(multipartFormData: { multipartFormData in
-            if let imageData = UIImageJPEGRepresentation(image, 0.8) {
+            if let images = image,  let imageData = images.jpegData(compressionQuality: 0.8) {
                 multipartFormData.append(imageData, withName: "image", fileName: "photo.jpg", mimeType: "jpg/png")
+            } else if let path = filePath, let voiceContent = FileManager.default.contents(atPath: path.path) {
+                multipartFormData.append(voiceContent, withName: "file", fileName: path.lastPathComponent, mimeType: "audio/m4a")
+
             }
             for (key, value) in lstParam {
                 if value is String || value is Int {
@@ -48,24 +51,25 @@ class AlamofireReq: NSObject {
                 }
             }
         }, to: url, encodingCompletion: { encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.responseJSON { response in
-                        switch response.result {
-                        case .success(let value):
-                            let json = JSON(value)
-                            self.checkStatus(json: json, onCompletion: onCompletion)
-                        case .failure(let error):
-                            let status = ["error": "\(error)"]
-                            let json = JSON(status)
-                            onCompletion(json, false)
-                        }
+            switch encodingResult {
+            case .success(let upload, _, _):
+                upload.responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        let json = JSON(value)
+                        self.checkStatus(json: json, onCompletion: onCompletion)
+                    case .failure(let error):
+                        let status = ["error": "\(error)"]
+                        let json = JSON(status)
+                        onCompletion(json, false)
                     }
-                case .failure(let encodingError):
-                    print("encoding Error : \(encodingError)")
                 }
-            })
+            case .failure(let encodingError):
+                print("encoding Error : \(encodingError)")
+            }
+        })
     }
+
 
     func checkStatus(json: JSON, onCompletion: (JSON, Bool) -> Void) {
         let status = AppTools.convertStringToBool(data: json["status"].stringValue)

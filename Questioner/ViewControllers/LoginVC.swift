@@ -37,7 +37,7 @@ class LoginVC: UIViewController, UserDelegate {
 
         let usernameViewShadowframe = CGRect(x: usernameView.frame.origin.x - 5, y: usernameView.frame.origin.y + 5, width: usernameView.frame.width, height: usernameView.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: usernameViewShadowframe, color: .black, opacity: 0.5, radius: usernameView.frame.height / 2))
-        self.view.bringSubview(toFront: usernameView)
+        self.view.bringSubviewToFront(usernameView)
 
 
         passwordView.layer.cornerRadius = passwordView.frame.height / 2;
@@ -45,7 +45,7 @@ class LoginVC: UIViewController, UserDelegate {
 
         let passwordViewShadowframe = CGRect(x: passwordView.frame.origin.x - 5, y: passwordView.frame.origin.y + 5, width: passwordView.frame.width, height: passwordView.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: passwordViewShadowframe, color: .black, opacity: 0.5, radius: passwordView.frame.height / 2))
-        self.view.bringSubview(toFront: passwordView)
+        self.view.bringSubviewToFront(passwordView)
 
     }
 

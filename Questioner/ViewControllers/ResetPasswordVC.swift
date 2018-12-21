@@ -34,7 +34,7 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         
         let password1ViewShadowframe = CGRect(x: password1View.frame.origin.x-5, y: password1View.frame.origin.y+5, width: password1View.frame.width, height: password1View.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: password1ViewShadowframe, color: .black, opacity: 0.5, radius: password1View.frame.height / 2))
-        self.view.bringSubview(toFront: password1View)
+        self.view.bringSubviewToFront(password1View)
         
         
         password2View.layer.cornerRadius = password2View.frame.height / 2;
@@ -42,7 +42,7 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         
         let password2ViewShadowframe = CGRect(x: password2View.frame.origin.x-5, y: password2View.frame.origin.y+5, width: password2View.frame.width, height: password2View.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: password2ViewShadowframe, color: .black, opacity: 0.5, radius: password2View.frame.height / 2))
-        self.view.bringSubview(toFront: password2View)
+        self.view.bringSubviewToFront(password2View)
         
 
         // Do any additional setup after loading the view.

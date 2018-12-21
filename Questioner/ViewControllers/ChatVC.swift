@@ -17,10 +17,6 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     @IBOutlet weak var questionView: UIView!
 
-    @IBOutlet weak var questionTF: UITextField!
-    @IBOutlet weak var attachmentBtn: UIButton!
-    @IBOutlet weak var imageBtn: UIButton!
-    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var messagesCollectionView: UICollectionView!
 
     @IBOutlet weak var ratingView: UIView!
@@ -29,6 +25,8 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     @IBOutlet weak var floatRatingView: FloatRatingView!
     @IBOutlet weak var rateTitleLbl: UILabel!
     @IBOutlet weak var rateLbl: UILabel!
+    @IBOutlet weak var inputAreaHeightConstraint: NSLayoutConstraint!
+    
 
     var type = typeEnum.none
     var timer = Timer()
@@ -42,6 +40,11 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     var teacherId = ""
 
+    lazy var messageInputAreaVC: MessageInputAreaViewController = {
+        MessageInputAreaViewController(conversationID: conversationId, conversationIsEnded: isEnd, type: type)
+    }()
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,16 +55,32 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         ratingView.isHidden = true
 
         messageHelper.delegate = self
+        messageHelper.sendDelegate = self
+        messageHelper.conversationId = self.conversationId
         floatRatingView.delegate = self
 
         messagesCollectionView.delegate = self
         messagesCollectionView.dataSource = self
 
+        messageHelper.delegate = self
+        messageHelper.conversationId = conversationId
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.getMessages()
+
+        messageInputAreaVC.messageVC = self
+        messageInputAreaVC.delegate = self
+        addChild(messageInputAreaVC)
+        view.addSubview(messageInputAreaVC.view)
+        messageInputAreaVC.didMove(toParent: self)
+
+        UIView.performWithoutAnimation {
+            questionView.addSubview(messageInputAreaVC.view)
+        }
+
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.getMessages), userInfo: nil, repeats: true)
 
     }
@@ -104,16 +123,6 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         default:
             break
         }
-
-        self.questionTF.layer.cornerRadius = 30
-        self.questionView.layer.cornerRadius = 30
-        self.questionView.clipsToBounds = true
-
-        if isEnd{
-            sendBtn.isEnabled = false
-        }else{
-            sendBtn.isEnabled = true
-        }
     }
 
     func initRateView() {
@@ -138,19 +147,10 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistory"), for: .normal)
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistoryPressed"), for: .highlighted)
-
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .normal)
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .highlighted)
-
-        self.imageBtn.setImage(UIImage(named: "\(type)BtnImg"), for: .normal)
-        self.imageBtn.setImage(UIImage(named: "\(type)BtnImgPressed"), for: .highlighted)
-
-        self.sendBtn.setImage(UIImage(named: "\(type)BtnSend"), for: .normal)
-        self.sendBtn.setImage(UIImage(named: "\(type)BtnSendPressed"), for: .highlighted)
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.questionView.frame.origin.y == 0{
                 self.questionView.frame.origin.y -= keyboardSize.height
             }
@@ -158,7 +158,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.questionView.frame.origin.y != 0{
                 self.questionView.frame.origin.y += keyboardSize.height
             }
@@ -207,45 +207,38 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 
 
-    @IBAction func send(_ sender: Any) {
-        sendBtn.isEnabled = false
-        imageBtn.isEnabled = false
-        attachmentBtn.isEnabled = false
-
-        if (questionTF.text?.isEmpty)!{
-            ViewHelper.showToastMessage(message: "There is nothing to send")
-        }else{
-            var typeString = String()
-            switch type {
-            case .english:
-                typeString = "english"
-            case .math:
-                typeString = "math"
-            case .science:
-                typeString = "science"
-            case .toefl:
-                typeString = "toefl"
-            default:
-                break
-            }
-            messageHelper.sendMessage(conversationId: self.conversationId, message: questionTF.text!, type: typeString)
-        }
-    }
+//    @IBAction func send(_ sender: Any) {
+//        sendBtn.isEnabled = false
+//        imageBtn.isEnabled = false
+//        attachmentBtn.isEnabled = false
+//
+//        if (questionTF.text?.isEmpty)!{
+//            ViewHelper.showToastMessage(message: "There is nothing to send")
+//        }else{
+//            var typeString = String()
+//            switch type {
+//            case .english:
+//                typeString = "english"
+//            case .math:
+//                typeString = "math"
+//            case .science:
+//                typeString = "science"
+//            case .toefl:
+//                typeString = "toefl"
+//            default:
+//                break
+//            }
+//            messageHelper.sendMessage(conversationId: self.conversationId, message: questionTF.text!, type: typeString)
+//        }
+//    }
 
     func sendMessageSuccessfully() {
-        questionTF.text = ""
-
-        sendBtn.isEnabled = true
-        imageBtn.isEnabled = true
-        attachmentBtn.isEnabled = true
 
         getMessages()
     }
 
     func sendMessageUnsuccessfully(error: String) {
-        sendBtn.isEnabled = true
-        imageBtn.isEnabled = true
-        attachmentBtn.isEnabled = true
+
 
         ViewHelper.showToastMessage(message: error)
     }
@@ -336,14 +329,38 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         rateConfirmBtn.isEnabled = true
         ViewHelper.showToastMessage(message: error)
     }
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension ChatVC: MessageInputAreaViewControllerDelegate {
+    func sendChat(message: String?, image: UIImage?, filePath: URL?, type: Int) {
+        var typeString = String()
+        switch self.type {
+        case .english:
+            typeString = "english"
+        case .math:
+            typeString = "math"
+        case .science:
+            typeString = "science"
+        case .toefl:
+            typeString = "toefl"
+        default:
+            break
+        }
+        messageHelper.sendChat(message: message, filePath: filePath, type: type, images: image, typeString: typeString)
     }
-    */
+
+    func adjustInputAreaHeightConstraint(height: CGFloat) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            self.inputAreaHeightConstraint.constant = height
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+}
+
+extension ChatVC: sendChatDelegate {
+    func sendChatStatus(isSucceded: Bool) {
+        getMessages()
+    }
+
 
 }

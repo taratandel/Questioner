@@ -57,7 +57,7 @@ class SignUpVC: UIViewController, UserDelegate {
 
         let viewShadowframe = CGRect(x: viewToEdit.frame.origin.x - 5, y: viewToEdit.frame.origin.y + 5, width: viewToEdit.frame.width, height: viewToEdit.frame.height)
         self.view.addSubview(ViewHelper.MakeShadowView(frame: viewShadowframe, color: .black, opacity: 0.5, radius: viewToEdit.frame.height / 2))
-        self.view.bringSubview(toFront: viewToEdit)
+        self.view.bringSubviewToFront(viewToEdit)
 
     }
     override func didReceiveMemoryWarning() {
