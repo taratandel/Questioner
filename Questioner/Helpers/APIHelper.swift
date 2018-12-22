@@ -36,18 +36,22 @@ class AlamofireReq: NSObject {
         }
     }
 
-    func sendPostMPReq(urlString: String, lstParam: [String: AnyObject], image: UIImage, onCompletion: @escaping(JSON, Bool) -> Void) {
+    func sendPostMPReq(urlString: String, lstParam: [String: AnyObject], image: UIImage?, filePath: URL?, onCompletion: @escaping(JSON, Bool) -> Void) {
         let url = BASE_URL + urlString
         Alamofire.upload(multipartFormData: { multipartFormData in
-//            if let imageData = UIImageJPEGRepresentation(image, 0.8) {
-//                multipartFormData.append(imageData, withName: "image", fileName: "photo.jpg", mimeType: "jpg/png")
-//            }
+            if let images = image, let imageData = images.jpegData(compressionQuality: 0.8) {
+                multipartFormData.append(imageData, withName: "image", fileName: "photo.jpg", mimeType: "jpg/png")
+            } else if let path = filePath, let voiceContent = FileManager.default.contents(atPath: path.path) {
+                multipartFormData.append(voiceContent, withName: "file", fileName: path.lastPathComponent, mimeType: "audio/m4a")
+
+            }
             for (key, value) in lstParam {
                 if value is String || value is Int {
                     multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
                 }
             }
         }, to: url, encodingCompletion: { encodingResult in
+
                 switch encodingResult {
                 case .success(let upload, _, _):
                     upload.responseJSON { response in
@@ -66,7 +70,6 @@ class AlamofireReq: NSObject {
                 }
             })
     }
-
     func checkStatus(json: JSON, onCompletion: (JSON, Bool) -> Void) {
         let status = AppTools.convertStringToBool(data: json["status"].stringValue)
         if status {

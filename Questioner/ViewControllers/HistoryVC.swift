@@ -56,6 +56,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
         }else{
             ViewHelper.showToastMessage(message: "please login!")
         }
+
     }
 
     func getConversationsSuccessfully(conversations: [Conversation]) {
@@ -87,9 +88,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ConversationTVC
-
         let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
-
         let conversation = cell.conversation
 
         chatVC.conversationId = conversation.conversationId
