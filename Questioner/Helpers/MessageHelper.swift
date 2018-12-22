@@ -23,12 +23,18 @@ import SwiftyJSON
     @objc optional func sendRateUnsuccessfully(error: String)
 
 }
+
+protocol sendChatDelegate: NSObjectProtocol {
+    func sendChatStatus(isSucceed: Bool)
+}
+
 class MessageHelper {
     var delegate: MessageDelegate!
+    weak var sendDelegate: sendChatDelegate?
+    var conversationId = ""
 
     func sendMessage(conversationId: String, message: String, type: String) {
-        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject]
-
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_MSG, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
@@ -58,27 +64,12 @@ class MessageHelper {
             }
         })
     }
-//    func sendImgMessage(conversationId: String, message: String, type: String, image: UIImage) {
-//        let imageData = UIImageJPEGRepresentation(image, 1)
-//        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
-//
-//        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_IMG, lstParam: lstParams, onCompletion: {
-//            response, status in
-//            if status {
-//                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageSuccessfully)){
-//                    self.delegate!.sendMessageSuccessfully!()
-//                }
-//            } else {
-//                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageUnsuccessfully(error:))){
-//                    self.delegate!.sendMessageUnsuccessfully!(error: JSON(response).stringValue)
-//                }
-//            }
-//        })
-//    }
 
-    func sendFileMessage(conversationId: String, message: String, type: String) {
-        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
-        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_FILE, lstParam: lstParams, onCompletion: {
+    func sendImgMessage(conversationId: String, message: String, type: String, image: UIImage) {
+        let imageData = image.jpegData(compressionQuality: 1)
+        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
+
+        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_IMG, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
                 if self.delegate.responds (to: #selector(MessageDelegate.sendMessageSuccessfully)){
@@ -91,6 +82,22 @@ class MessageHelper {
             }
         })
     }
+
+//    func sendFileMessage(conversationId: String, message: String, type: String) {
+//        let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
+//        AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_FILE, lstParam: lstParams, onCompletion: {
+//            response, status in
+//            if status {
+//                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageSuccessfully)){
+//                    self.delegate!.sendMessageSuccessfully!()
+//                }
+//            } else {
+//                if self.delegate.responds (to: #selector(MessageDelegate.sendMessageUnsuccessfully(error:))){
+//                    self.delegate!.sendMessageUnsuccessfully!(error: JSON(response).stringValue)
+//                }
+//            }
+//        })
+//    }
 
     func getMessage(conversationId: String) {
         let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject]
@@ -149,5 +156,47 @@ class MessageHelper {
         })
     }
 
-    
+    func sendChat(message: String?, filePath: URL?, type: Int, images: UIImage?, typeString: String) {
+        var url = ""
+        switch type {
+        case 2:
+            url = URLHelper.SEND_VOICE
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": "" as AnyObject,  "questionType": type as AnyObject]
+            AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: nil, filePath: filePath, onCompletion: {
+                response, status in
+                if status {
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
+                } else {
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
+                }
+            })
+
+        case 1:
+            url = URLHelper.SEND_IMG
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": "" as AnyObject, "questionType": type as AnyObject]
+            AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: images, filePath: nil, onCompletion: {
+                response, status in
+                if status {
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
+                } else {
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
+                }
+            })
+        default:
+            url = URLHelper.SEND_MSG
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": message
+                as AnyObject, "questionType": type as AnyObject]
+            AlamofireReq.sharedApi.sendPostReq(urlString: url, lstParam: lstParams) {
+
+                response, status in
+                if status {
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
+                }
+                else {
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
+                }
+            }
+
+        }
+    }
 }

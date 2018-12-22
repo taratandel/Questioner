@@ -598,60 +598,9 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNw-zp-mDO">
                                 <rect key="frame" x="16" y="638" width="343" height="110"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zif-1b-btm">
-                                        <rect key="frame" x="297" y="8" width="26" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="26" id="TWc-Ew-tSH"/>
-                                            <constraint firstAttribute="height" constant="20" id="fRO-SI-u1x"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="imgPressed:" destination="j1A-B3-1B4" eventType="touchUpInside" id="US2-Bi-AUD"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aOk-kY-KCR">
-                                        <rect key="frame" x="300" y="33" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="Wd9-RL-Jg8"/>
-                                            <constraint firstAttribute="width" constant="20" id="mRe-OW-MoN"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="filePressed:" destination="j1A-B3-1B4" eventType="touchUpInside" id="Q6R-qS-4V2"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exe-e9-gu0">
-                                        <rect key="frame" x="290" y="58" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="c20-yO-1VP"/>
-                                            <constraint firstAttribute="height" constant="40" id="mKn-dE-B0L"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="send:" destination="j1A-B3-1B4" eventType="touchUpInside" id="XdP-Tn-KGg"/>
-                                        </connections>
-                                    </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type your question here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UT7-5c-iQV">
-                                        <rect key="frame" x="8" y="8" width="277" height="90"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" red="0.4756349325" green="0.47564673419999998" blue="0.47564041610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Foo-Regular" family="Foo" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="aOk-kY-KCR" firstAttribute="leading" secondItem="UT7-5c-iQV" secondAttribute="trailing" constant="15" id="6BY-4b-Za5"/>
-                                    <constraint firstAttribute="bottom" secondItem="UT7-5c-iQV" secondAttribute="bottom" constant="12" id="6IJ-wZ-o14"/>
-                                    <constraint firstAttribute="trailing" secondItem="Zif-1b-btm" secondAttribute="trailing" constant="20" id="A3F-V5-ejI"/>
-                                    <constraint firstItem="exe-e9-gu0" firstAttribute="leading" secondItem="UT7-5c-iQV" secondAttribute="trailing" constant="5" id="FUH-sR-RUb"/>
-                                    <constraint firstItem="Zif-1b-btm" firstAttribute="leading" secondItem="UT7-5c-iQV" secondAttribute="trailing" constant="12" id="JqA-NW-iNi"/>
                                     <constraint firstAttribute="height" constant="110" id="QbZ-6i-7SD"/>
-                                    <constraint firstItem="UT7-5c-iQV" firstAttribute="leading" secondItem="wNw-zp-mDO" secondAttribute="leading" constant="8" id="SVj-V2-r4D"/>
-                                    <constraint firstItem="aOk-kY-KCR" firstAttribute="top" secondItem="Zif-1b-btm" secondAttribute="bottom" constant="5" id="XRY-N4-FOs"/>
-                                    <constraint firstItem="exe-e9-gu0" firstAttribute="bottom" secondItem="UT7-5c-iQV" secondAttribute="bottom" id="XWu-ac-dSf"/>
-                                    <constraint firstAttribute="trailing" secondItem="exe-e9-gu0" secondAttribute="trailing" constant="13" id="cQO-ba-WRG"/>
-                                    <constraint firstAttribute="trailing" secondItem="aOk-kY-KCR" secondAttribute="trailing" constant="23" id="coc-cU-fDW"/>
-                                    <constraint firstItem="UT7-5c-iQV" firstAttribute="top" secondItem="wNw-zp-mDO" secondAttribute="top" constant="8" id="eD9-bG-41s"/>
-                                    <constraint firstItem="exe-e9-gu0" firstAttribute="top" secondItem="aOk-kY-KCR" secondAttribute="bottom" constant="5" id="sdw-rr-BYg"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ByZ-7G-h7g">
@@ -879,25 +828,22 @@
                         <viewLayoutGuide key="safeArea" id="MLx-4n-Lws"/>
                     </view>
                     <connections>
-                        <outlet property="attachmentBtn" destination="aOk-kY-KCR" id="rcw-OZ-TpF"/>
                         <outlet property="backBtn" destination="JeJ-If-ZTJ" id="99e-gG-MDX"/>
                         <outlet property="floatRatingView" destination="Cyy-aZ-w1f" id="jYu-EE-N49"/>
                         <outlet property="historyBtn" destination="ByZ-7G-h7g" id="yfD-Z4-ofo"/>
-                        <outlet property="imageBtn" destination="Zif-1b-btm" id="LjY-XQ-nZe"/>
+                        <outlet property="inputAreaHeightConstraint" destination="QbZ-6i-7SD" id="DNs-pZ-KWs"/>
                         <outlet property="messagesCollectionView" destination="9w6-Gr-V5h" id="aMx-m3-CnL"/>
-                        <outlet property="questionTF" destination="UT7-5c-iQV" id="hkB-Np-xDG"/>
                         <outlet property="questionView" destination="wNw-zp-mDO" id="Cla-Gp-cE8"/>
                         <outlet property="rateBox" destination="0r8-UR-Bet" id="0DB-Fe-WjK"/>
                         <outlet property="rateConfirmBtn" destination="kht-XJ-Qmy" id="cfd-f3-pog"/>
                         <outlet property="rateLbl" destination="Wb8-Bo-32p" id="3Cm-EV-gyM"/>
                         <outlet property="rateTitleLbl" destination="0fz-d6-aVr" id="cIP-rJ-nzi"/>
                         <outlet property="ratingView" destination="6RD-eL-06q" id="qo1-rG-e95"/>
-                        <outlet property="sendBtn" destination="exe-e9-gu0" id="qJi-2H-XrL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Dy-Iq-kg0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6764" y="31.773399014778327"/>
+            <point key="canvasLocation" x="6764" y="31.934032983508249"/>
         </scene>
         <!--HistoryVC-->
         <scene sceneID="HdA-wr-S2P">

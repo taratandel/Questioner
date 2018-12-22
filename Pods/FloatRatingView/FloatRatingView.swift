@@ -70,7 +70,7 @@ open class FloatRatingView: UIView {
     /**
     Sets the empty and full image view content mode.
     */
-    var imageContentMode: UIViewContentMode = UIViewContentMode.scaleAspectFit
+    var imageContentMode: UIView.ContentMode = UIView.ContentMode.scaleAspectFit
     
     /**
     Minimum rating.

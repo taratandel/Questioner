@@ -18,10 +18,10 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     @IBOutlet weak var questionView: UIView!
 
-    @IBOutlet weak var questionTF: UITextField!
-    @IBOutlet weak var attachmentBtn: UIButton!
-    @IBOutlet weak var imageBtn: UIButton!
-    @IBOutlet weak var sendBtn: UIButton!
+//    @IBOutlet weak var questionTF: UITextField!
+//    @IBOutlet weak var attachmentBtn: UIButton!
+//    @IBOutlet weak var imageBtn: UIButton!
+//    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var messagesCollectionView: UICollectionView!
 
     @IBOutlet weak var ratingView: UIView!
@@ -43,28 +43,46 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     var messages = [Message()]
     var numOfCurrentMessages : Int = 0
+    @IBOutlet weak var inputAreaHeightConstraint: NSLayoutConstraint!
+
+    lazy var messageInputAreaVC: MessageInputAreaViewController = {
+        MessageInputAreaViewController(conversationID: conversationId, conversationIsEnded: isEnd, type: type)
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         AudioPlayInstance.delegate = self
-
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         self.initViews()
         self.initRateView()
+
         ratingView.isHidden = true
 
         messageHelper.delegate = self
+        messageHelper.sendDelegate = self
         floatRatingView.delegate = self
 
         messagesCollectionView.delegate = self
         messagesCollectionView.dataSource = self
 
+        messageHelper.conversationId = conversationId
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.getMessages()
+        messageInputAreaVC.messageVC = self
+        messageInputAreaVC.delegate = self
+        addChild(messageInputAreaVC)
+        view.addSubview(messageInputAreaVC.view)
+        messageInputAreaVC.didMove(toParent: self)
+
+        UIView.performWithoutAnimation {
+            questionView.addSubview(messageInputAreaVC.view)
+        }
+
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.getMessages), userInfo: nil, repeats: true)
 
     }
@@ -108,15 +126,16 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
             break
         }
 
-        self.questionTF.layer.cornerRadius = 30
-        self.questionView.layer.cornerRadius = 30
-        self.questionView.clipsToBounds = true
+//        self.questionTF.layer.cornerRadius = 30
+//        self.questionView.layer.cornerRadius = 30
+//        self.questionView.clipsToBounds = true
+//
+//        if isEnd{
+//            sendBtn.isEnabled = false
+//        }else{
+//            sendBtn.isEnabled = true
+//        }
 
-        if isEnd{
-            sendBtn.isEnabled = false
-        }else{
-            sendBtn.isEnabled = true
-        }
     }
 
     func initRateView() {
@@ -142,14 +161,14 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistory"), for: .normal)
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistoryPressed"), for: .highlighted)
 
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .normal)
-        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .highlighted)
-
-        self.imageBtn.setImage(UIImage(named: "\(type)BtnImg"), for: .normal)
-        self.imageBtn.setImage(UIImage(named: "\(type)BtnImgPressed"), for: .highlighted)
-
-        self.sendBtn.setImage(UIImage(named: "\(type)BtnSend"), for: .normal)
-        self.sendBtn.setImage(UIImage(named: "\(type)BtnSendPressed"), for: .highlighted)
+//        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .normal)
+//        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .highlighted)
+//
+//        self.imageBtn.setImage(UIImage(named: "\(type)BtnImg"), for: .normal)
+//        self.imageBtn.setImage(UIImage(named: "\(type)BtnImgPressed"), for: .highlighted)
+//
+//        self.sendBtn.setImage(UIImage(named: "\(type)BtnSend"), for: .normal)
+//        self.sendBtn.setImage(UIImage(named: "\(type)BtnSendPressed"), for: .highlighted)
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -168,74 +187,44 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         }
     }
 
-    @IBAction func imgPressed(_ sender: Any) {
-        let alert = UIAlertController(title: "Alert", message: "Please choose to upload image or take new one:", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "take photo", style: .default, handler: {action in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .camera;
-                imagePicker.allowsEditing = true
-                self.present(imagePicker, animated: true, completion: nil)
+//    @IBAction func imgPressed(_ sender: Any) {
+//        let alert = UIAlertController(title: "Alert", message: "Please choose to upload image or take new one:", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "take photo", style: .default, handler: {action in
+//            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//                let imagePicker = UIImagePickerController()
+//                imagePicker.delegate = self
+//                imagePicker.sourceType = .camera;
+//                imagePicker.allowsEditing = true
+//                self.present(imagePicker, animated: true, completion: nil)
+//
+//            }else{
+//                return
+//            }
+//        }))
+//        alert.addAction(UIAlertAction(title: "upload", style: .default, handler: {action in
+//            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+//                let imagePicker = UIImagePickerController()
+//                imagePicker.delegate = self
+//                imagePicker.sourceType = .photoLibrary;
+//                imagePicker.allowsEditing = true
+//
+//                self.present(imagePicker, animated: true, completion: nil)
+//            }else{
+//                return
+//            }
+//        }))
+//        self.present(alert, animated: true)
+//    }
 
-            }else{
-                return
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "upload", style: .default, handler: {action in
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .photoLibrary;
-                imagePicker.allowsEditing = true
-
-                self.present(imagePicker, animated: true, completion: nil)
-            }else{
-                return
-            }
-        }))
-        self.present(alert, animated: true)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
-    }
-
-    @IBAction func filePressed(_ sender: Any) {
-
-    }
 
     @IBAction func backPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
 
-
-    @IBAction func send(_ sender: Any) {
-        sendBtn.isEnabled = false
-        imageBtn.isEnabled = false
-        attachmentBtn.isEnabled = false
-
-        if (questionTF.text?.isEmpty)!{
-            ViewHelper.showToastMessage(message: "There is nothing to send")
-        }else{
-            messageHelper.sendMessage(conversationId: self.conversationId, message: questionTF.text!, type: "typeofmessage")
-        }
-    }
-
-    func sendMessageSuccessfully() {
-        questionTF.text = ""
-
-        sendBtn.isEnabled = true
-        imageBtn.isEnabled = true
-        attachmentBtn.isEnabled = true
-
-        getMessages()
-    }
-
     func sendMessageUnsuccessfully(error: String) {
-        sendBtn.isEnabled = true
-        imageBtn.isEnabled = true
-        attachmentBtn.isEnabled = true
+//        sendBtn.isEnabled = true
+//        imageBtn.isEnabled = true
+//        attachmentBtn.isEnabled = true
 
         ViewHelper.showToastMessage(message: error)
     }
@@ -300,6 +289,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
                 break
             }
         }
+
         return cell
     }
 
@@ -347,5 +337,36 @@ extension ChatVC: PlayAudioDelegate, ContactAndVoiceMessageCellProtocol {
         } else {
             AudioPlayInstance.stopPlayer()
         }
+    }
+}
+extension ChatVC: MessageInputAreaViewControllerDelegate {
+    func sendChat(message: String?, image: UIImage?, filePath: URL?, type: Int) {
+        var typeString = String()
+        switch self.type {
+        case .english:
+            typeString = "english"
+        case .math:
+            typeString = "math"
+        case .science:
+            typeString = "science"
+        case .toefl:
+            typeString = "toefl"
+        default:
+            break
+        }
+        messageHelper.sendChat(message: message, filePath: filePath, type: type, images: image, typeString: typeString)
+    }
+
+    func adjustInputAreaHeightConstraint(height: CGFloat) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            self.inputAreaHeightConstraint.constant = height
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+}
+
+extension ChatVC: sendChatDelegate {
+    func sendChatStatus(isSucceed: Bool) {
+        getMessages()
     }
 }

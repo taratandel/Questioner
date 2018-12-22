@@ -67,7 +67,7 @@ PODS:
   - UIColor_Hex_Swift (4.2.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.4)
+  - Alamofire
   - Firebase/Core
   - Firebase/Messaging
   - FloatRatingView (~> 2.0.0)
@@ -110,6 +110,6 @@ SPEC CHECKSUMS:
   TGCameraViewController: 0768b534800e6136e70dd3cc5aafe1310b448480
   UIColor_Hex_Swift: bc07fc197421ee896b9ed6dcfa2054b7fbf75145
 
-PODFILE CHECKSUM: 0ed292b644d0f9f07cc8f58669f15415d71f30dd
+PODFILE CHECKSUM: 4b0a85405244a7abf5e09d75490ce636e3e83cb9
 
 COCOAPODS: 1.5.0
