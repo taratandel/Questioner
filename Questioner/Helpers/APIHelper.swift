@@ -76,7 +76,11 @@ class AlamofireReq: NSObject {
         if status {
             onCompletion(json, status)
         } else {
-            onCompletion(json["error"], status)
+            if let _ = json["error"].string {
+                onCompletion(json["error"], status)
+            } else {
+                onCompletion(json["message"], status)
+            }
         }
     }
 }
