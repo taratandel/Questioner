@@ -109,7 +109,9 @@ class LoginVC: UIViewController, UserDelegate {
             SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQVC)
         } else{
             let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
-            SegueHelper.presentViewController(sourceViewController: self, destinationViewController: chooseCategoryVC)
+            let nv = UINavigationController()
+            nv.viewControllers = [chooseCategoryVC]
+            present(nv, animated: true, completion: nil)
         }
     }
     func unsuccessfulOperation(error: String) {

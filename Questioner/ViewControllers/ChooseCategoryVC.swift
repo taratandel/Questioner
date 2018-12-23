@@ -34,7 +34,10 @@ class ChooseCategoryVC: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.isNavigationBarHidden = true
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -61,7 +64,7 @@ class ChooseCategoryVC: UIViewController {
             break
         }
 
-        SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQuestionVC)
+        self.navigationController?.pushViewController(sendQuestionVC, animated: true)
     }
 
 }
