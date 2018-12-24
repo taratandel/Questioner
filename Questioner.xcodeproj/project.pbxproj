@@ -45,6 +45,8 @@
 		8492AB7B2198170500CE8D26 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492AB7A2198170500CE8D26 /* CoreDataHelper.swift */; };
 		8492AB7D2198171A00CE8D26 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492AB7C2198171A00CE8D26 /* Student.swift */; };
 		8492EBE821189C490095B8B2 /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492EBE721189C490095B8B2 /* MessageHelper.swift */; };
+		84B3FFB621CD255E00BB5DD9 /* ImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3FFB521CD255E00BB5DD9 /* ImageVC.swift */; };
+		84B3FFB821CD45B500BB5DD9 /* AudioPlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3FFB721CD45B500BB5DD9 /* AudioPlayManager.swift */; };
 		84CE2D842117AB24003A8659 /* MessageCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CE2D832117AB24003A8659 /* MessageCVC.swift */; };
 		84CE2D872118663E003A8659 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CE2D862118663E003A8659 /* Message.swift */; };
 		84D50FCB21B6AB6A004D18C6 /* ConversationTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D50FCA21B6AB6A004D18C6 /* ConversationTVC.swift */; };
@@ -120,6 +122,8 @@
 		8492AB7C2198171A00CE8D26 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		8492EBE721189C490095B8B2 /* MessageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
 		84A23A71215E5C860017BABE /* Questioner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Questioner.entitlements; sourceTree = "<group>"; };
+		84B3FFB521CD255E00BB5DD9 /* ImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVC.swift; sourceTree = "<group>"; };
+		84B3FFB721CD45B500BB5DD9 /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
 		84CE2D832117AB24003A8659 /* MessageCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCVC.swift; sourceTree = "<group>"; };
 		84CE2D862118663E003A8659 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		84D50FCA21B6AB6A004D18C6 /* ConversationTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTVC.swift; sourceTree = "<group>"; };
@@ -300,6 +304,7 @@
 				8492EBE721189C490095B8B2 /* MessageHelper.swift */,
 				8448C5702196DB93002E8A9B /* NotificationHelper.swift */,
 				8492AB7A2198170500CE8D26 /* CoreDataHelper.swift */,
+				84B3FFB721CD45B500BB5DD9 /* AudioPlayManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				843FD0A320F9D28D00B291D7 /* PaymentVC.swift */,
 				845B357221A556CB0031D1C3 /* SendQuestionVC.swift */,
 				84D50FCC21B6B48E004D18C6 /* HistoryVC.swift */,
+				84B3FFB521CD255E00BB5DD9 /* ImageVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -612,6 +618,8 @@
 				84CE2D872118663E003A8659 /* Message.swift in Sources */,
 				843FD0A420F9D28D00B291D7 /* PaymentVC.swift in Sources */,
 				57DE3CF6207AB4B000C093DF /* URLHelper.swift in Sources */,
+				843FD0A220F9CFC400B291D7 /* ChatVC.swift in Sources */,
+				84B3FFB621CD255E00BB5DD9 /* ImageVC.swift in Sources */,
 				18B420FD21CD129F002B01F9 /* MessageInputAreaViewController.swift in Sources */,
 				843FD0A220F9CFC400B291D7 /* ChatVC.swift in Sources */,
 				57DE3CF0207AA5B400C093DF /* APIHelper.swift in Sources */,
@@ -621,6 +629,7 @@
 				849058BE206698E200341669 /* SignUpVC.swift in Sources */,
 				845B357321A556CB0031D1C3 /* SendQuestionVC.swift in Sources */,
 				84D50FD121B6B754004D18C6 /* Conversation.swift in Sources */,
+				84B3FFB821CD45B500BB5DD9 /* AudioPlayManager.swift in Sources */,
 				8487405A2067ABE700F1442E /* ViewHelper.swift in Sources */,
 				B6B05C64207CE371007A7B1D /* AppTools.swift in Sources */,
 				8492AB7B2198170500CE8D26 /* CoreDataHelper.swift in Sources */,

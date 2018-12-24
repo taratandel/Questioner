@@ -25,7 +25,7 @@ import SwiftyJSON
 }
 
 protocol sendChatDelegate: NSObjectProtocol {
-    func sendChatStatus(isSucceded: Bool)
+    func sendChatStatus(isSucceed: Bool)
 }
 
 class MessageHelper {
@@ -35,7 +35,6 @@ class MessageHelper {
 
     func sendMessage(conversationId: String, message: String, type: String) {
         let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject]
-
         AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_MSG, lstParam: lstParams, onCompletion: {
             response, status in
             if status {
@@ -65,6 +64,7 @@ class MessageHelper {
             }
         })
     }
+
     func sendImgMessage(conversationId: String, message: String, type: String, image: UIImage) {
         let imageData = image.jpegData(compressionQuality: 1)
         let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "message": message as AnyObject, "isTeacher": false as AnyObject, "questionType": type as AnyObject, "image": imageData as AnyObject]
@@ -165,9 +165,9 @@ class MessageHelper {
             AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: nil, filePath: filePath, onCompletion: {
                 response, status in
                 if status {
-                    self.sendDelegate?.sendChatStatus(isSucceded: true)
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
                 } else {
-                    self.sendDelegate?.sendChatStatus(isSucceded: false)
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
                 }
             })
 
@@ -177,9 +177,9 @@ class MessageHelper {
             AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: images, filePath: nil, onCompletion: {
                 response, status in
                 if status {
-                    self.sendDelegate?.sendChatStatus(isSucceded: true)
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
                 } else {
-                    self.sendDelegate?.sendChatStatus(isSucceded: false)
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
                 }
             })
         default:
@@ -190,14 +190,13 @@ class MessageHelper {
 
                 response, status in
                 if status {
-                    self.sendDelegate?.sendChatStatus(isSucceded: true)
+                    self.sendDelegate?.sendChatStatus(isSucceed: true)
                 }
                 else {
-                    self.sendDelegate?.sendChatStatus(isSucceded: false)
+                    self.sendDelegate?.sendChatStatus(isSucceed: false)
                 }
             }
 
         }
     }
-
 }

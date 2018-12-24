@@ -9,6 +9,7 @@
 import UIKit
 import UIColor_Hex_Swift
 import FloatRatingView
+import MobileCoreServices
 
 class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, MessageDelegate, UICollectionViewDataSource, FloatRatingViewDelegate{
 
@@ -17,6 +18,10 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     @IBOutlet weak var questionView: UIView!
 
+//    @IBOutlet weak var questionTF: UITextField!
+//    @IBOutlet weak var attachmentBtn: UIButton!
+//    @IBOutlet weak var imageBtn: UIButton!
+//    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var messagesCollectionView: UICollectionView!
 
     @IBOutlet weak var ratingView: UIView!
@@ -25,52 +30,49 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     @IBOutlet weak var floatRatingView: FloatRatingView!
     @IBOutlet weak var rateTitleLbl: UILabel!
     @IBOutlet weak var rateLbl: UILabel!
-    @IBOutlet weak var inputAreaHeightConstraint: NSLayoutConstraint!
-    
+
+    var timer = Timer()
+    var currentVoiceCell = VoiceMessageCVC()
+    var messageHelper = MessageHelper()
 
     var type = typeEnum.none
-    var timer = Timer()
     var isEnd = false
+    var isRated = true
+    var teacherId = ""
+    var conversationId = ""
 
-    var messageHelper = MessageHelper()
     var messages = [Message()]
     var numOfCurrentMessages : Int = 0
-    var conversationId = ""
-    var isRated = true
-
-    var teacherId = ""
+    @IBOutlet weak var inputAreaHeightConstraint: NSLayoutConstraint!
 
     lazy var messageInputAreaVC: MessageInputAreaViewController = {
         MessageInputAreaViewController(conversationID: conversationId, conversationIsEnded: isEnd, type: type)
     }()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        AudioPlayInstance.delegate = self
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
         self.initViews()
         self.initRateView()
+
         ratingView.isHidden = true
 
         messageHelper.delegate = self
         messageHelper.sendDelegate = self
-        messageHelper.conversationId = self.conversationId
         floatRatingView.delegate = self
 
         messagesCollectionView.delegate = self
         messagesCollectionView.dataSource = self
 
-        messageHelper.delegate = self
         messageHelper.conversationId = conversationId
-
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.getMessages()
-
         messageInputAreaVC.messageVC = self
         messageInputAreaVC.delegate = self
         addChild(messageInputAreaVC)
@@ -123,6 +125,17 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         default:
             break
         }
+
+//        self.questionTF.layer.cornerRadius = 30
+//        self.questionView.layer.cornerRadius = 30
+//        self.questionView.clipsToBounds = true
+//
+//        if isEnd{
+//            sendBtn.isEnabled = false
+//        }else{
+//            sendBtn.isEnabled = true
+//        }
+
     }
 
     func initRateView() {
@@ -147,6 +160,15 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistory"), for: .normal)
         self.historyBtn.setImage(UIImage(named: "\(type)BtnHistoryPressed"), for: .highlighted)
+
+//        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .normal)
+//        self.attachmentBtn.setImage(UIImage(named: "\(type)BtnAttachment"), for: .highlighted)
+//
+//        self.imageBtn.setImage(UIImage(named: "\(type)BtnImg"), for: .normal)
+//        self.imageBtn.setImage(UIImage(named: "\(type)BtnImgPressed"), for: .highlighted)
+//
+//        self.sendBtn.setImage(UIImage(named: "\(type)BtnSend"), for: .normal)
+//        self.sendBtn.setImage(UIImage(named: "\(type)BtnSendPressed"), for: .highlighted)
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -165,80 +187,44 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         }
     }
 
-    @IBAction func imgPressed(_ sender: Any) {
-        let alert = UIAlertController(title: "Alert", message: "Please choose to upload image or take new one:", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "take photo", style: .default, handler: {action in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .camera;
-                imagePicker.allowsEditing = true
-                self.present(imagePicker, animated: true, completion: nil)
+//    @IBAction func imgPressed(_ sender: Any) {
+//        let alert = UIAlertController(title: "Alert", message: "Please choose to upload image or take new one:", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "take photo", style: .default, handler: {action in
+//            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//                let imagePicker = UIImagePickerController()
+//                imagePicker.delegate = self
+//                imagePicker.sourceType = .camera;
+//                imagePicker.allowsEditing = true
+//                self.present(imagePicker, animated: true, completion: nil)
+//
+//            }else{
+//                return
+//            }
+//        }))
+//        alert.addAction(UIAlertAction(title: "upload", style: .default, handler: {action in
+//            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+//                let imagePicker = UIImagePickerController()
+//                imagePicker.delegate = self
+//                imagePicker.sourceType = .photoLibrary;
+//                imagePicker.allowsEditing = true
+//
+//                self.present(imagePicker, animated: true, completion: nil)
+//            }else{
+//                return
+//            }
+//        }))
+//        self.present(alert, animated: true)
+//    }
 
-            }else{
-                return
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "upload", style: .default, handler: {action in
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .photoLibrary;
-                imagePicker.allowsEditing = true
-
-                self.present(imagePicker, animated: true, completion: nil)
-            }else{
-                return
-            }
-        }))
-        self.present(alert, animated: true)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
-    }
-
-    @IBAction func filePressed(_ sender: Any) {
-
-    }
 
     @IBAction func backPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
 
-
-//    @IBAction func send(_ sender: Any) {
-//        sendBtn.isEnabled = false
-//        imageBtn.isEnabled = false
-//        attachmentBtn.isEnabled = false
-//
-//        if (questionTF.text?.isEmpty)!{
-//            ViewHelper.showToastMessage(message: "There is nothing to send")
-//        }else{
-//            var typeString = String()
-//            switch type {
-//            case .english:
-//                typeString = "english"
-//            case .math:
-//                typeString = "math"
-//            case .science:
-//                typeString = "science"
-//            case .toefl:
-//                typeString = "toefl"
-//            default:
-//                break
-//            }
-//            messageHelper.sendMessage(conversationId: self.conversationId, message: questionTF.text!, type: typeString)
-//        }
-//    }
-
-    func sendMessageSuccessfully() {
-
-        getMessages()
-    }
-
     func sendMessageUnsuccessfully(error: String) {
-
+//        sendBtn.isEnabled = true
+//        imageBtn.isEnabled = true
+//        attachmentBtn.isEnabled = true
 
         ViewHelper.showToastMessage(message: error)
     }
@@ -277,29 +263,33 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "messageCell", for: indexPath) as! MessageCVC
-        let message = messages[indexPath.row]
-        cell.messageLbl.text = message.message
-        cell.nameLbl.text = message.name
-        cell.timeLbl.text = message.time
-
-        switch type {
-        case .english:
-            cell.nameLbl.textColor = UIColor("#66320F99")
-            cell.timeLbl.textColor = UIColor("#AF371699")
-        case .math:
-            cell.nameLbl.textColor = UIColor("#455D2099")
-            cell.timeLbl.textColor = UIColor("#95C45799")
-        case .science:
-            cell.nameLbl.textColor = UIColor("#47184C99")
-            cell.timeLbl.textColor = UIColor("#66408A99")
-        case .toefl:
-            cell.nameLbl.textColor = UIColor("#1C3E5C99")
-            cell.timeLbl.textColor = UIColor("#175D9999")
-        default:
-            break
+        var cell = UICollectionViewCell()
+        if messages.count>0{
+            let message = messages[indexPath.row]
+            switch message.messageType{
+            case 0:
+                let textCell = collectionView.dequeueReusableCell(withReuseIdentifier: "txtMessageCell", for: indexPath) as! MessageCVC
+                textCell.message = message
+                textCell.type = type
+                cell = textCell
+            case 1:
+                let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageMessageCVC
+                imageCell.parentVC = self
+                imageCell.message = message
+                imageCell.showImage()
+                cell = imageCell
+            case 2:
+                let voiceCell = collectionView.dequeueReusableCell(withReuseIdentifier: "voiceCell", for: indexPath) as! VoiceMessageCVC
+                voiceCell.message = message
+                voiceCell.delegate = self
+                voiceCell.indexpathraw = indexPath.row
+                voiceCell.parentVeiwController = self
+                cell = voiceCell
+            default:
+                break
+            }
         }
-        cell.layer.opacity = 1
+
         return cell
     }
 
@@ -331,6 +321,24 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 }
 
+extension ChatVC: PlayAudioDelegate, ContactAndVoiceMessageCellProtocol {
+
+    func audioPlayStatus(status: AudioPlayerStatus) {
+        ViewHelper.showToastMessage(message: status.rawValue)
+    }
+    func cellDidTapedVoiceButton(_ cell: VoiceMessageCVC, isPlayingVoice: Bool, index: Int) {
+        if self.currentVoiceCell != nil && self.currentVoiceCell != cell {
+            ViewHelper.showToastMessage(message:"finished")
+        }
+        if isPlayingVoice {
+            self.currentVoiceCell = cell
+            let dataDecoded:Data = Data(base64Encoded: messages[index].file, options: Data.Base64DecodingOptions(rawValue: 0)) ?? Data()
+            AudioPlayInstance.playSoundWithPath(dataDecoded)
+        } else {
+            AudioPlayInstance.stopPlayer()
+        }
+    }
+}
 extension ChatVC: MessageInputAreaViewControllerDelegate {
     func sendChat(message: String?, image: UIImage?, filePath: URL?, type: Int) {
         var typeString = String()
@@ -358,9 +366,7 @@ extension ChatVC: MessageInputAreaViewControllerDelegate {
 }
 
 extension ChatVC: sendChatDelegate {
-    func sendChatStatus(isSucceded: Bool) {
+    func sendChatStatus(isSucceed: Bool) {
         getMessages()
     }
-
-
 }

@@ -48,8 +48,11 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.hideKeyboardWhenTappedAround()
 
         messageHelper.delegate = self
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        imageBtn.isHidden = true
 
         // Do any additional setup after loading the view.
     }

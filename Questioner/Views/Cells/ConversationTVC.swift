@@ -10,17 +10,18 @@ import UIKit
 
 class ConversationTVC: UITableViewCell {
 
-    var conversationId = ""
-    var questionType = ""
-    var isEnd = false
-    var isRated = false
+
+    var conversation = Conversation()
 
     @IBOutlet weak var dateLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         self.backgroundColor = UIColor(white: 1, alpha: 0.6)
+        dateLbl.text = conversation.date
+        nameLbl.text = conversation.name
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

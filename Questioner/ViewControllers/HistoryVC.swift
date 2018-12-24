@@ -12,11 +12,12 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
 
     let defaults = UserDefaults.standard
     let messageHelper = MessageHelper()
+    var conversations = [Conversation()]
 
     @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var conversationsTable: UITableView!
-    var conversations = [Conversation()]
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,9 +31,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
         conversationsTable.delegate = self
         conversationsTable.dataSource = self
         conversationsTable.isHidden = true
-
         messageHelper.delegate = self
-
         self.getConversations()
     }
 
@@ -79,13 +78,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath) as! ConversationTVC
-        let conversation = conversations[indexPath.row]
-        cell.nameLbl.text = conversation.name
-        cell.dateLbl.text = conversation.date
-        cell.conversationId = conversation.conversationId
-        cell.isEnd = conversation.isEnd
-        cell.questionType = conversation.questionType
-        cell.isRated = conversation.isRated
+        cell.conversation = conversations[indexPath.row]
 
         cell.layer.cornerRadius = 20
         cell.layer.opacity = 0.6
@@ -96,9 +89,11 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ConversationTVC
         let chatVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChatVC") as! ChatVC
-        chatVC.conversationId = cell.conversationId
-        chatVC.isRated = cell.isRated
-        switch cell.questionType {
+        let conversation = cell.conversation
+
+        chatVC.conversationId = conversation.conversationId
+        chatVC.isRated = conversation.isRated
+        switch conversation.questionType {
         case "science":
             chatVC.type = .science
         case "math":
