@@ -210,6 +210,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         sendBtn.isEnabled = true
 
         questionView.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         indicatorView.isHidden = false
     }
 
