@@ -110,9 +110,9 @@ class UserHelper {
                     UserDefaults.standard.set(studentData, forKey: "StudentData")
                 }
 
-                if let token = self.defaults.string(forKey: "Token"), let deviceId = self.defaults.string(forKey: "DeviceID"), let deviceName = self.defaults.string(forKey: "DeviceName"){
+                if let token = self.defaults.string(forKey: "Token") {
 
-                    let lstParams: [String: AnyObject] = ["phone": phone as AnyObject, "fcmToken": token as AnyObject, "deviceName": deviceName as AnyObject, "deviceId": deviceId as AnyObject]
+                    let lstParams: [String: AnyObject] = ["phone": phone as AnyObject, "fcmToken": token as AnyObject, "deviceName": UIDevice.current.name as AnyObject, "deviceId": UIDevice.current.identifierForVendor!.uuidString as AnyObject]
                     AlamofireReq.sharedApi.sendPostReq(urlString: URLHelper.SEND_TOKEN, lstParam: lstParams) {
                         response, status in
                         if status {

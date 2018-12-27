@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
 
-
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         let defaults = UserDefaults.standard
 
