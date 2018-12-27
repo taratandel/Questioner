@@ -57,6 +57,12 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.isNavigationBarHidden = false
+
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -204,6 +210,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         sendBtn.isEnabled = true
 
         questionView.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         indicatorView.isHidden = false
     }
 
