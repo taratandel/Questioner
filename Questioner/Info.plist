@@ -27,6 +27,18 @@
 		<string>foo.ttf</string>
 		<string>SHOWG.TTF</string>
 	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>برای گرفتن عکس آگهی لازم است به دیوار اجازه دسترسی به دوربین موبایل‌تان را بدهید.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>اگر مایل هستید دیوار شهر و محله شما را به صورت خودکار پیدا کند، اجازه بدهید به مکان شما دسترسی داشته باشد. </string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>اگر مایل هستید دیوار شهر و محله شما را به صورت خودکار پیدا کند، اجازه بدهید به مکان شما دسترسی داشته باشد. </string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>برای ظبط صدا لازم است اجازه دسترسی به میکروفون موبایلتان را بدهید.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>برای ذخیره عکس لازم است به دیوار اجازه دسترسی به عکس هایتان را بدهید.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>برای انتخاب عکس آگهی از بین عکس‌های موبایل‌تان لازم است به دیوار اجازه دسترسی به عکس‌های موبایل‌تان را بدهید.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
