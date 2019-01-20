@@ -190,6 +190,8 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
                         sendBtn.isEnabled = true
                     }else{
                         messageHelper.sendQuestion(studentId: stdPhone, message: questionTF.text!, type: type.toString)
+                        questionView.isHidden = true
+                        indicatorView.isHidden = false
                     }
                 }else{
                     ViewHelper.showToastMessage(message: "your account isn't active.")
@@ -209,9 +211,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         sendBtn.isEnabled = true
 
-        questionView.isHidden = true
         self.navigationController?.isNavigationBarHidden = true
-        indicatorView.isHidden = false
     }
 
     func sendMessageUnsuccessfully(error: String) {

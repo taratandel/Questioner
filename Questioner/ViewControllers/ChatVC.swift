@@ -68,9 +68,9 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         messagesCollectionView.dataSource = self
 
         messageHelper.conversationId = conversationId
-
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.getMessages()
         messageInputAreaVC.messageVC = self
@@ -272,12 +272,16 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
                 textCell.message = message
                 textCell.type = type
                 cell = textCell
+
+                cell.awakeFromNib()
             case 1:
                 let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageMessageCVC
                 imageCell.parentVC = self
                 imageCell.message = message
                 imageCell.showImage()
                 cell = imageCell
+
+                cell.awakeFromNib()
             case 2:
                 let voiceCell = collectionView.dequeueReusableCell(withReuseIdentifier: "voiceCell", for: indexPath) as! VoiceMessageCVC
                 voiceCell.message = message
@@ -285,6 +289,8 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
                 voiceCell.indexpathraw = indexPath.row
                 voiceCell.parentVeiwController = self
                 cell = voiceCell
+
+                cell.awakeFromNib()
             default:
                 break
             }

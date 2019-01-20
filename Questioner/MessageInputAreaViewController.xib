@@ -14,7 +14,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageInputAreaViewController" customModule="Answerer" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageInputAreaViewController" customModule="Questioner" customModuleProvider="target">
             <connections>
                 <outlet property="recordingView" destination="5dR-hu-37K" id="vG2-ae-ZGK"/>
                 <outlet property="sendButton" destination="DVa-Kn-Q6v" id="OG5-cV-iYh"/>
@@ -43,14 +43,14 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment" translatesAutoresizingMaskIntoConstraints="NO" id="9VO-WB-P8E">
-                    <rect key="frame" x="299" y="13" width="24" height="24"/>
+                    <rect key="frame" x="279" y="13" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="Y8q-vn-Vhn"/>
                         <constraint firstAttribute="width" constant="24" id="w40-cX-EtF"/>
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xa1-6b-BcS">
-                    <rect key="frame" x="295" y="4" width="32" height="42"/>
+                    <rect key="frame" x="275" y="4" width="32" height="42"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="32" id="fBy-jF-ims"/>
                     </constraints>
@@ -62,7 +62,7 @@
                     </connections>
                 </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="BwS-Qd-gNv">
-                    <rect key="frame" x="8" y="4.5" width="273" height="41.5"/>
+                    <rect key="frame" x="8" y="4.5" width="253" height="41.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" name="IRANSans" family="IRANSans" pointSize="16"/>
@@ -83,10 +83,10 @@
                     </connections>
                 </textView>
                 <view clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5dR-hu-37K">
-                    <rect key="frame" x="0.0" y="1" width="327" height="49"/>
+                    <rect key="frame" x="0.0" y="1" width="307" height="49"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A53-pn-QqW">
-                    <rect key="frame" x="331" y="9" width="32" height="32"/>
+                    <rect key="frame" x="311" y="9" width="32" height="32"/>
                     <color key="backgroundColor" red="1" green="0.024170271520000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="RvT-eu-VR3"/>
@@ -99,14 +99,14 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mic" translatesAutoresizingMaskIntoConstraints="NO" id="819-vg-c6i">
-                    <rect key="frame" x="335" y="13" width="24" height="24"/>
+                    <rect key="frame" x="315" y="13" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="JUR-7q-wRZ"/>
                         <constraint firstAttribute="width" constant="24" id="YC1-wR-yB1"/>
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DVa-Kn-Q6v">
-                    <rect key="frame" x="327" y="1" width="48" height="49"/>
+                    <rect key="frame" x="307" y="1" width="48" height="49"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="48" id="55D-VI-282"/>
                     </constraints>
@@ -143,14 +143,14 @@
                 <constraint firstAttribute="bottom" secondItem="BwS-Qd-gNv" secondAttribute="bottom" constant="4" id="vPu-CH-bZq"/>
                 <constraint firstItem="A53-pn-QqW" firstAttribute="height" secondItem="DVa-Kn-Q6v" secondAttribute="height" constant="-17" id="vnZ-ot-mto"/>
                 <constraint firstItem="DVa-Kn-Q6v" firstAttribute="left" secondItem="BwS-Qd-gNv" secondAttribute="right" constant="46" id="w4S-Ib-hGH"/>
-                <constraint firstAttribute="right" secondItem="DVa-Kn-Q6v" secondAttribute="right" id="wxr-5c-fzv"/>
+                <constraint firstAttribute="right" secondItem="DVa-Kn-Q6v" secondAttribute="right" constant="20" id="wxr-5c-fzv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="32.799999999999997" y="-10.344827586206897"/>
         </view>
     </objects>
     <resources>
-        <image name="attachment" width="48" height="48"/>
-        <image name="mic" width="48" height="48"/>
+        <image name="attachment" width="37.5" height="37.5"/>
+        <image name="mic" width="36" height="36"/>
     </resources>
 </document>

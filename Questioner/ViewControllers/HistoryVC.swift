@@ -83,6 +83,7 @@ class HistoryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
         cell.layer.cornerRadius = 20
         cell.layer.opacity = 0.6
 
+        cell.awakeFromNib()
         return cell
     }
 
