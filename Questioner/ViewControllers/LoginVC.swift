@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginVC: UIViewController, UserDelegate {
+class LoginVC: UIViewController, UserDelegate, UITextFieldDelegate {
 
     let defaults = UserDefaults.standard
 
@@ -127,4 +127,12 @@ class LoginVC: UIViewController, UserDelegate {
     }
 
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == usernameTF{
+            passwordTF.becomeFirstResponder()
+        }else{
+            dismissKeyboard()
+        }
+        return true
+    }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignUpVC: UIViewController, UserDelegate {
+class SignUpVC: UIViewController, UserDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var emailView: UIView!
@@ -98,6 +98,20 @@ class SignUpVC: UIViewController, UserDelegate {
         ViewHelper.showToastMessage(message: error)
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == name{
+            email.becomeFirstResponder()
+        }else if textField == email{
+            phoneNumber.becomeFirstResponder()
+        }else if textField == phoneNumber{
+            pass.becomeFirstResponder()
+        }else if textField == pass{
+            repeatpass.becomeFirstResponder()
+        }else{
+            dismissKeyboard()
+        }
+        return true
+    }
 
     /*
     // MARK: - Navigation
