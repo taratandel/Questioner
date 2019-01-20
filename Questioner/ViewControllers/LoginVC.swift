@@ -29,23 +29,27 @@ class LoginVC: UIViewController, UserDelegate {
         userHelper.delegate = self
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
+        passwordView.isHidden = true
+        usernameView.isHidden = true
 
         self.view.addBackground(imageName: "background1", contentMode: .scaleAspectFill)
+    }
 
-        usernameView.layer.cornerRadius = usernameView.frame.height / 2;
-        usernameView.clipsToBounds = true
+    override func viewDidAppear(_ animated: Bool) {
+        editView(viewToEdit: usernameView)
+        editView(viewToEdit: passwordView)
+        passwordView.isHidden = false
+        usernameView.isHidden = false
+    }
 
-        let usernameViewShadowframe = CGRect(x: usernameView.frame.origin.x - 5, y: usernameView.frame.origin.y + 5, width: usernameView.frame.width, height: usernameView.frame.height)
-        self.view.addSubview(ViewHelper.MakeShadowView(frame: usernameViewShadowframe, color: .black, opacity: 0.5, radius: usernameView.frame.height / 2))
-        self.view.bringSubviewToFront(usernameView)
+    func editView(viewToEdit: UIView) {
 
+        viewToEdit.layer.cornerRadius = viewToEdit.frame.height / 2;
+        viewToEdit.clipsToBounds = true
 
-        passwordView.layer.cornerRadius = passwordView.frame.height / 2;
-        passwordView.clipsToBounds = true
-
-        let passwordViewShadowframe = CGRect(x: passwordView.frame.origin.x - 5, y: passwordView.frame.origin.y + 5, width: passwordView.frame.width, height: passwordView.frame.height)
-        self.view.addSubview(ViewHelper.MakeShadowView(frame: passwordViewShadowframe, color: .black, opacity: 0.5, radius: passwordView.frame.height / 2))
-        self.view.bringSubviewToFront(passwordView)
+        let viewShadowframe = CGRect(x: viewToEdit.frame.origin.x - 5, y: viewToEdit.frame.origin.y + 5, width: viewToEdit.frame.width, height: viewToEdit.frame.height)
+        self.view.addSubview(ViewHelper.MakeShadowView(frame: viewShadowframe, color: .black, opacity: 0.5, radius: viewToEdit.frame.height / 2))
+        self.view.bringSubviewToFront(viewToEdit)
 
     }
 

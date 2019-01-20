@@ -36,7 +36,9 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var imageBtn: UIButton!
 
-    var type = typeEnum.none
+    @IBOutlet weak var backBtn: UIButton!
+    
+    var type = typeEnum.math
 
     var isSearching = false
 
@@ -70,12 +72,16 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     func initViews() {
+        self.backBtn.addTarget(self, action: #selector(backBtnPressed), for: .touchUpInside)
+
         indicator.startAnimating()
 
         if isSearching {
+            backBtn.isHidden = true
             questionView.isHidden = true
             indicatorView.isHidden = false
         }else{
+            backBtn.isHidden = false
             questionView.isHidden = false
             indicatorView.isHidden = true
         }
@@ -124,8 +130,16 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.sendBtn.setImage(UIImage(named: "\(type)BtnSend"), for: .normal)
         self.sendBtn.setImage(UIImage(named: "\(type)BtnSendPressed"), for: .highlighted)
 
+        self.backBtn.setImage(UIImage(named: "\(type)BtnBack"), for: .normal)
+        self.backBtn.setImage(UIImage(named: "\(type)BtnBackPressed"), for: .highlighted)
     }
 
+    @objc func backBtnPressed(){
+        let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
+        let nv = UINavigationController()
+        nv.viewControllers = [chooseCategoryVC]
+        present(nv, animated: true, completion: nil)
+    }
 
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
@@ -179,6 +193,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBAction func sendQuestion(_ sender: Any) {
         sendBtn.isEnabled = false
+        backBtn.isEnabled = false
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "StudentData") != nil) {
             let decoder = try? JSONDecoder().decode(Student.self, from: defaults.object(forKey: "StudentData") as! Data)
@@ -188,9 +203,11 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
                     if (questionTF.text?.isEmpty)!{
                         ViewHelper.showToastMessage(message: "enter the question first")
                         sendBtn.isEnabled = true
+                        backBtn.isEnabled = true
                     }else{
                         messageHelper.sendQuestion(studentId: stdPhone, message: questionTF.text!, type: type.toString)
                         questionView.isHidden = true
+                        backBtn.isHidden = true
                         indicatorView.isHidden = false
                     }
                 }else{
@@ -199,10 +216,12 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
             }else{
                 ViewHelper.showToastMessage(message: "please try to login first!")
                 sendBtn.isEnabled = true
+                backBtn.isEnabled = true
             }
         }else{
             ViewHelper.showToastMessage(message: "please try to login first!")
             sendBtn.isEnabled = true
+            backBtn.isEnabled = true
         }
     }
 
@@ -210,12 +229,14 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         questionTF.text = ""
 
         sendBtn.isEnabled = true
+        backBtn.isEnabled = true
 
         self.navigationController?.isNavigationBarHidden = true
     }
 
     func sendMessageUnsuccessfully(error: String) {
         sendBtn.isEnabled = true
+        backBtn.isEnabled = true
 
         ViewHelper.showToastMessage(message: error)
     }

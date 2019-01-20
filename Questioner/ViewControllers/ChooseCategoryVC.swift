@@ -63,8 +63,7 @@ class ChooseCategoryVC: UIViewController {
         default:
             break
         }
-
-        self.navigationController?.pushViewController(sendQuestionVC, animated: true)
+        SegueHelper.presentViewController(sourceViewController: self, destinationViewController: sendQuestionVC)
     }
 
 }

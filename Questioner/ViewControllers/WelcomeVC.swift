@@ -58,7 +58,7 @@ class WelcomeVC: UIViewController {
         introScrollView.isHidden = true
         introScrollView.isPagingEnabled = true
 
-        introScrollView.contentSize = CGSize(width: self.view.bounds.width * CGFloat(introInfoArray.count), height: self.view.frame.height)
+        introScrollView.contentSize = CGSize(width: self.view.bounds.width * CGFloat(introInfoArray.count), height: self.view.bounds.height)
 
         introScrollView.showsHorizontalScrollIndicator = false
         loadIntroInfos()
