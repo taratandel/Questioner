@@ -37,7 +37,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     var type = typeEnum.none
     var isEnd = false
-    var isRated = true
+    var isRated = false
     var teacherId = ""
     var conversationId = ""
 
@@ -246,6 +246,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
             if (messages.last?.isEnd)! && !isRated{
                 self.teacherId = (messages.last?.teacherId)!
                 self.ratingView.isHidden = false
+                isRated = true
             }
         }
     }
