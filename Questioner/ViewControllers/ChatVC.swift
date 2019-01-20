@@ -24,6 +24,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 //    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var messagesCollectionView: UICollectionView!
 
+    @IBOutlet weak var buttonOfTheQuestionView: NSLayoutConstraint!
     @IBOutlet weak var ratingView: UIView!
     @IBOutlet weak var rateBox: UIView!
     @IBOutlet weak var rateConfirmBtn: UIButton!
@@ -69,8 +70,8 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
         messageHelper.conversationId = conversationId
 //
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.getMessages()
         messageInputAreaVC.messageVC = self
@@ -172,19 +173,15 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.questionView.frame.origin.y == 0{
-                self.questionView.frame.origin.y -= keyboardSize.height
-            }
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.buttonOfTheQuestionView.constant = keyboardHeight
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.questionView.frame.origin.y != 0{
-                self.questionView.frame.origin.y += keyboardSize.height
-            }
-        }
+        self.buttonOfTheQuestionView.constant = 30
     }
 
 //    @IBAction func imgPressed(_ sender: Any) {

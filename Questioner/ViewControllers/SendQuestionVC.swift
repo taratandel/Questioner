@@ -27,12 +27,13 @@ enum typeEnum {
 }
 
 class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MessageDelegate {
+    @IBOutlet weak var bottomOfTheQVC: NSLayoutConstraint!
     
+    @IBOutlet weak var questionTF: UITextView!
     @IBOutlet weak var indicatorView: UIView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
 
     @IBOutlet weak var questionView: UIView!
-    @IBOutlet weak var questionTF: UITextField!
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var imageBtn: UIButton!
 
@@ -48,7 +49,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         self.initViews()
         self.hideKeyboardWhenTappedAround()
-
+        questionTF.delegate = self
         messageHelper.delegate = self
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -142,19 +143,14 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
-            }
-        }
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.bottomOfTheQVC.constant = keyboardHeight        }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
-        }
+        bottomOfTheQVC.constant = 71
     }
 
     @IBAction func imgPressed(_ sender: Any) {
@@ -242,3 +238,33 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
 }
+
+extension SendQuestionVC: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Write your question here"
+            textView.textColor = UIColor.lightGray
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.resignFirstResponder()
+        } else {
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 500
+    }
+}
+
