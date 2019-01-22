@@ -2,7 +2,7 @@
 //  urls.swift
 //  Questioner
 //
-//  Created by Tara Tandel on 1/20/1397 AP.
+//  Created by negar on 1/20/1397 AP.
 //  Copyright © 1397 negar. All rights reserved.
 //
 
