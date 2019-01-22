@@ -57,19 +57,22 @@ class WelcomeVC: UIViewController {
         
         introScrollView.isHidden = true
         introScrollView.isPagingEnabled = true
+
         introScrollView.contentSize = CGSize(width: self.view.bounds.width * CGFloat(introInfoArray.count), height: self.view.bounds.height)
+
         introScrollView.showsHorizontalScrollIndicator = false
-        
         loadIntroInfos()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if UserHelper.isAppAlreadyLaunchedOnce(){
-            self.performSegue(withIdentifier: "AfterIntroSegue", sender: self)
-        } else{
-            introScrollView.isHidden = false
-        }
+//        if UserHelper.isAppAlreadyLaunchedOnce(){
+//            self.performSegue(withIdentifier: "AfterIntroSegue", sender: self)
+//        } else{
+//            introScrollView.isHidden = false
+//        }
+        introScrollView.isHidden = false
+
     }
     
     func loadIntroInfos() {
@@ -78,7 +81,7 @@ class WelcomeVC: UIViewController {
                 introView.titleLabel.text = introInfo["title"]
                 introView.imageView.image = UIImage(named: introInfo["image"]!)
                 introView.discLbl.text = introInfo["description"]
-                introView.addBackground(imageName: introInfo["background"]!, contentMode: .scaleAspectFill)
+                introView.addBackground(imageName: introInfo["background"]!, contentMode: .scaleToFill)
                 
                 introView.nextBtn.setImage(UIImage(named: introInfo["btnImg"]!), for: .normal)
                 introView.nextBtn.setImage(UIImage(named: introInfo["btnPressedImg"]!), for: .highlighted)
@@ -87,7 +90,8 @@ class WelcomeVC: UIViewController {
                 
                 introView.pageCtrl.backgroundColor = UIColor(introInfo["pageCtrlColor"]!)
                 introView.pageCtrl.currentPage = index
-                
+
+                introView.frame.size.height = self.view.bounds.height
                 introView.frame.size.width = self.view.bounds.width
                 introView.frame.origin.x = CGFloat(index) * self.view.bounds.width
                 

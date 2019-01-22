@@ -17,6 +17,7 @@
 		57DE3CF2207AAA3100C093DF /* foo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57DE3CF1207AAA3100C093DF /* foo.ttf */; };
 		57DE3CF4207AAA4100C093DF /* SHOWG.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 57DE3CF3207AAA4100C093DF /* SHOWG.TTF */; };
 		57DE3CF6207AB4B000C093DF /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DE3CF5207AB4B000C093DF /* URLHelper.swift */; };
+		840B38AB21D4FD2C0028BF60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 840B38AA21D4FD2C0028BF60 /* GoogleService-Info.plist */; };
 		843134DD206C2E0200F3B07C /* LogoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843134DC206C2E0200F3B07C /* LogoVC.swift */; };
 		843FD0A020F8946F00B291D7 /* ChooseCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843FD09F20F8946F00B291D7 /* ChooseCategoryVC.swift */; };
 		843FD0A220F9CFC400B291D7 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843FD0A120F9CFC400B291D7 /* ChatVC.swift */; };
@@ -26,7 +27,6 @@
 		8458DC35206BBD420084F9AA /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458DC34206BBD420084F9AA /* IntroView.swift */; };
 		84597067206839CE001F32F1 /* UserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84597066206839CE001F32F1 /* UserHelper.swift */; };
 		8459706920683A87001F32F1 /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8459706820683A87001F32F1 /* WelcomeVC.swift */; };
-		845B356C219B34EA0031D1C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 845B356B219B34EA0031D1C3 /* GoogleService-Info.plist */; };
 		845B357321A556CB0031D1C3 /* SendQuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B357221A556CB0031D1C3 /* SendQuestionVC.swift */; };
 		845B357521A6A1470031D1C3 /* SegueHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B357421A6A1470031D1C3 /* SegueHelper.swift */; };
 		84848660205DA92D00038B14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8484865F205DA92D00038B14 /* AppDelegate.swift */; };
@@ -87,6 +87,7 @@
 		57DE3CF1207AAA3100C093DF /* foo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = foo.ttf; sourceTree = "<group>"; };
 		57DE3CF3207AAA4100C093DF /* SHOWG.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = SHOWG.TTF; sourceTree = "<group>"; };
 		57DE3CF5207AB4B000C093DF /* URLHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHelper.swift; sourceTree = "<group>"; };
+		840B38AA21D4FD2C0028BF60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		843134DC206C2E0200F3B07C /* LogoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoVC.swift; sourceTree = "<group>"; };
 		843FD09F20F8946F00B291D7 /* ChooseCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCategoryVC.swift; sourceTree = "<group>"; };
 		843FD0A120F9CFC400B291D7 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
@@ -96,7 +97,6 @@
 		8458DC34206BBD420084F9AA /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		84597066206839CE001F32F1 /* UserHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHelper.swift; sourceTree = "<group>"; };
 		8459706820683A87001F32F1 /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
-		845B356B219B34EA0031D1C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		845B357221A556CB0031D1C3 /* SendQuestionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendQuestionVC.swift; sourceTree = "<group>"; };
 		845B357421A6A1470031D1C3 /* SegueHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHelper.swift; sourceTree = "<group>"; };
 		8484865C205DA92C00038B14 /* Questioner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Questioner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,7 +267,7 @@
 				84848663205DA92D00038B14 /* Main.storyboard */,
 				84848669205DA92D00038B14 /* Assets.xcassets */,
 				8484866B205DA92D00038B14 /* LaunchScreen.storyboard */,
-				845B356B219B34EA0031D1C3 /* GoogleService-Info.plist */,
+				840B38AA21D4FD2C0028BF60 /* GoogleService-Info.plist */,
 				8484866E205DA92D00038B14 /* Info.plist */,
 				84848666205DA92D00038B14 /* Questioner.xcdatamodeld */,
 			);
@@ -485,13 +485,13 @@
 			files = (
 				18B420FE21CD129F002B01F9 /* VoiceRecorderViewController.xib in Resources */,
 				18B420FC21CD129F002B01F9 /* MessageInputAreaViewController.xib in Resources */,
+				840B38AB21D4FD2C0028BF60 /* GoogleService-Info.plist in Resources */,
 				57DE3CF2207AAA3100C093DF /* foo.ttf in Resources */,
 				8458DC2F206B8B140084F9AA /* Intro.xib in Resources */,
 				8484866D205DA92D00038B14 /* LaunchScreen.storyboard in Resources */,
 				57DE3CF4207AAA4100C093DF /* SHOWG.TTF in Resources */,
 				8484866A205DA92D00038B14 /* Assets.xcassets in Resources */,
 				84848665205DA92D00038B14 /* Main.storyboard in Resources */,
-				845B356C219B34EA0031D1C3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -815,6 +815,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2Z93C3477W;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Questioner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -835,6 +836,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2Z93C3477W;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Questioner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

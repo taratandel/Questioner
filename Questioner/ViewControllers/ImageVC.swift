@@ -10,9 +10,16 @@ import UIKit
 
 class ImageVC: UIViewController {
 
+    @IBAction func dismiss(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
     @IBOutlet weak var image: UIImageView!
+    var imageContent = UIImage()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        image.image = imageContent
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         // Do any additional setup after loading the view.
     }

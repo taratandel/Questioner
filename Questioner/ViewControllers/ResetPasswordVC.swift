@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ResetPasswordVC: UIViewController, UserDelegate {
+class ResetPasswordVC: UIViewController, UserDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var password1View: UIView!
     @IBOutlet weak var password2View: UIView!
@@ -85,7 +85,14 @@ class ResetPasswordVC: UIViewController, UserDelegate {
         ViewHelper.showToastMessage(message: error)
     }
 
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == password1TF{
+            password2TF.becomeFirstResponder()
+        }else{
+            dismissKeyboard()
+        }
+        return true
+    }
 
     /*
     // MARK: - Navigation

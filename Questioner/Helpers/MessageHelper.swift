@@ -105,7 +105,7 @@ class MessageHelper {
             response, status in
             if status {
                 var messages = [Message]()
-                let msg = JSON(response["messages"])
+                let msg = JSON(response["message"])
                 messages = Message.buildList(jsonData: msg)
 
                 if self.delegate.responds (to: #selector(MessageDelegate.getMessagesSuccessfully)){
@@ -125,7 +125,7 @@ class MessageHelper {
             response, status in
             if status {
                 var conversations = [Conversation]()
-                let msg = JSON(response["conversations"])
+                let msg = JSON(response["message"])
                 conversations = Conversation.buildList(jsonData: msg)
 
                 if self.delegate.responds (to: #selector(MessageDelegate.getConversationsSuccessfully)){
@@ -161,7 +161,7 @@ class MessageHelper {
         switch type {
         case 2:
             url = URLHelper.SEND_VOICE
-            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": "" as AnyObject,  "questionType": type as AnyObject]
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": false as AnyObject, "message": "" as AnyObject,  "questionType": type as AnyObject]
             AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: nil, filePath: filePath, onCompletion: {
                 response, status in
                 if status {
@@ -173,7 +173,7 @@ class MessageHelper {
 
         case 1:
             url = URLHelper.SEND_IMG
-            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": "" as AnyObject, "questionType": type as AnyObject]
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": false as AnyObject, "message": "" as AnyObject, "questionType": type as AnyObject]
             AlamofireReq.sharedApi.sendPostMPReq(urlString: url, lstParam: lstParams, image: images, filePath: nil, onCompletion: {
                 response, status in
                 if status {
@@ -184,8 +184,7 @@ class MessageHelper {
             })
         default:
             url = URLHelper.SEND_MSG
-            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": true as AnyObject, "message": message
-                as AnyObject, "questionType": type as AnyObject]
+            let lstParams: [String: AnyObject] = ["conversationId": conversationId as AnyObject, "isTeacher": false as AnyObject, "message": message as AnyObject, "questionType": type as AnyObject]
             AlamofireReq.sharedApi.sendPostReq(urlString: url, lstParam: lstParams) {
 
                 response, status in

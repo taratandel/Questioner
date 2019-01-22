@@ -24,6 +24,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 //    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var messagesCollectionView: UICollectionView!
 
+    @IBOutlet weak var buttonOfTheQuestionView: NSLayoutConstraint!
     @IBOutlet weak var ratingView: UIView!
     @IBOutlet weak var rateBox: UIView!
     @IBOutlet weak var rateConfirmBtn: UIButton!
@@ -37,7 +38,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 
     var type = typeEnum.none
     var isEnd = false
-    var isRated = true
+    var isRated = false
     var teacherId = ""
     var conversationId = ""
 
@@ -68,7 +69,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         messagesCollectionView.dataSource = self
 
         messageHelper.conversationId = conversationId
-
+//
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
@@ -172,19 +173,15 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.questionView.frame.origin.y == 0{
-                self.questionView.frame.origin.y -= keyboardSize.height
-            }
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.buttonOfTheQuestionView.constant = keyboardHeight
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.questionView.frame.origin.y != 0{
-                self.questionView.frame.origin.y += keyboardSize.height
-            }
-        }
+        self.buttonOfTheQuestionView.constant = 30
     }
 
 //    @IBAction func imgPressed(_ sender: Any) {
@@ -227,6 +224,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 //        attachmentBtn.isEnabled = true
 
         ViewHelper.showToastMessage(message: error)
+
     }
 
     @objc func getMessages(){
@@ -246,6 +244,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
             if (messages.last?.isEnd)! && !isRated{
                 self.teacherId = (messages.last?.teacherId)!
                 self.ratingView.isHidden = false
+                isRated = true
             }
         }
     }
@@ -272,19 +271,27 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
                 textCell.message = message
                 textCell.type = type
                 cell = textCell
+
+                cell.awakeFromNib()
             case 1:
                 let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageMessageCVC
                 imageCell.parentVC = self
                 imageCell.message = message
+                imageCell.type = type
                 imageCell.showImage()
                 cell = imageCell
+
+                cell.awakeFromNib()
             case 2:
                 let voiceCell = collectionView.dequeueReusableCell(withReuseIdentifier: "voiceCell", for: indexPath) as! VoiceMessageCVC
                 voiceCell.message = message
+                voiceCell.type = type
                 voiceCell.delegate = self
                 voiceCell.indexpathraw = indexPath.row
                 voiceCell.parentVeiwController = self
                 cell = voiceCell
+
+                cell.awakeFromNib()
             default:
                 break
             }
@@ -367,6 +374,7 @@ extension ChatVC: MessageInputAreaViewControllerDelegate {
 
 extension ChatVC: sendChatDelegate {
     func sendChatStatus(isSucceed: Bool) {
+        self.messageInputAreaVC.waitingView.isHidden = true
         getMessages()
     }
 }
