@@ -1,9 +1,9 @@
 //
 //  VoiceRecorderViewController.swift
-//  Divar
+//  negar
 //
 //  Created by Apple on 11/11/18.
-//  Copyright © 2018 Divar. All rights reserved.
+//  Copyright © 2018 negar. All rights reserved.
 //
 
 import UIKit

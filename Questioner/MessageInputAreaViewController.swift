@@ -1,9 +1,9 @@
 //
 //  MessageInputAreaViewController.swift
-//  Divar
+//  negar
 //
-//  Created by Zahra Aghajani on 8/7/18.
-//  Copyright © 2018 Divar. All rights reserved.
+//  Created by Negar on 8/7/18.
+//  Copyright © 2018 negar. All rights reserved.
 //
 
 import MobileCoreServices
