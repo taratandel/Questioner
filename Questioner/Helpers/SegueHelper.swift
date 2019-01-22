@@ -2,7 +2,7 @@
 //  SegueHelper.swift
 //  Answerer
 //
-//  Created by Tara Tandel on 7/30/1397 AP.
+//  Created by negar on 7/30/1397 AP.
 //  Copyright © 1397 negar. All rights reserved.
 //
 

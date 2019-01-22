@@ -1,9 +1,9 @@
 //
 //  ChatAudioFileManager.swift
-//  Divar
+//  negar
 //
-//  Created by Tara on 11/17/18.
-//  Copyright © 2018 Divar. All rights reserved.
+//  Created by negar on 11/17/18.
+//  Copyright © 2018 negar. All rights reserved.
 //
 
 import Foundation

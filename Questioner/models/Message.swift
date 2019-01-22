@@ -11,27 +11,44 @@ import Foundation
 import SwiftyJSON
 
 class Message: NSObject {
-    var name = ""
-    var message = ""
-    var time = ""
+
     var isTeacher = false
+    var teacherId = ""
+    var studentId = ""
+    var name = ""
+
+    var message = ""
     var image = ""
     var file = ""
-    var isEnd = false
-    var teacherId = ""
-    var messageType = 0
+    var timeStamp = ""
 
+    var questionType = 0
+    var messageType = 0
+    var isEnd = false
+    var conversationId = ""
 
     class func buildSingle(jsonData: JSON) -> Message {
+        let BASE_URL = "http://178.63.114.19:2020/media/"
+        
         let message = Message()
         //inja bayad badan esme moalem ro begirimo bezarim
 
-        if jsonData["isTeacher"].boolValue{
+        message.isTeacher = jsonData["isTeacher"].boolValue
+        message.teacherId = jsonData["teacherId"].stringValue
+        message.studentId = jsonData["studentId"].stringValue
+        if message.isTeacher{
             message.name = " teacher"
         }else{
             message.name = " me"
         }
+
         message.message = "  " + jsonData["message"].stringValue
+        if jsonData["image"].stringValue.count != 0{
+            message.image = BASE_URL + jsonData["image"].stringValue
+        }
+        if jsonData["file"].stringValue.count != 0{
+            message.file = BASE_URL + jsonData["file"].stringValue
+        }
 
         let calendar = NSCalendar.current
         let dateFormatter = DateFormatter()
@@ -39,24 +56,20 @@ class Message: NSObject {
         if let date = dateFormatter.date(from: jsonData["timeStamp"].stringValue) {
             if calendar.isDateInToday(date){
                 dateFormatter.dateFormat = "HH:mm"
-                message.time = (dateFormatter.string(from: date)) + " "
+                message.timeStamp = (dateFormatter.string(from: date)) + " "
             }else{
                 dateFormatter.dateFormat = "MM/dd"
-                message.time = (dateFormatter.string(from: date)) + " "
+                message.timeStamp = (dateFormatter.string(from: date)) + " "
             }
         }else{
-            message.time = ""
+            message.timeStamp = ""
         }
-        message.isTeacher = jsonData["isTeacher"].boolValue
-        if jsonData["file"].exists(){
-            message.file = jsonData["file"].stringValue
-        }
-        if jsonData["image"].exists(){
-            message.image = jsonData["image"].stringValue
-        }
-        message.isEnd = jsonData["isEnd"].boolValue
-        message.teacherId = jsonData["teacherId"].stringValue
+
+        message.questionType = jsonData["questionType"].intValue
         message.messageType = jsonData["messageType"].intValue
+        message.isEnd = jsonData["isEnd"].boolValue
+        message.conversationId = jsonData["conversationId"].stringValue
+        
         return message
 
     }

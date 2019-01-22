@@ -2,7 +2,7 @@
 //  APIController.swift
 //  Questioner
 //
-//  Created by Tara Tandel on 1/20/1397 AP.
+//  Created by negar on 1/20/1397 AP.
 //  Copyright © 1397 negar. All rights reserved.
 //
 
@@ -38,9 +38,10 @@ class AlamofireReq: NSObject {
 
     func sendPostMPReq(urlString: String, lstParam: [String: AnyObject], image: UIImage?, filePath: URL?, onCompletion: @escaping(JSON, Bool) -> Void) {
         let url = BASE_URL + urlString
+
         Alamofire.upload(multipartFormData: { multipartFormData in
             if let images = image, let imageData = images.jpegData(compressionQuality: 0.8) {
-                multipartFormData.append(imageData, withName: "image", fileName: lstParam["conversationId"] as! String, mimeType: "jpg/png")
+                multipartFormData.append(imageData, withName: "image", fileName: "photo.jpeg", mimeType: "jpg/png")
             } else if let path = filePath, let voiceContent = FileManager.default.contents(atPath: path.path) {
                 multipartFormData.append(voiceContent, withName: "file", fileName: path.lastPathComponent, mimeType: "audio/m4a")
             }
@@ -75,11 +76,7 @@ class AlamofireReq: NSObject {
         if status {
             onCompletion(json, status)
         } else {
-            if let _ = json["error"].string {
-                onCompletion(json["error"], status)
-            } else {
-                onCompletion(json["message"], status)
-            }
+            onCompletion(json["error"], status)
         }
     }
 }

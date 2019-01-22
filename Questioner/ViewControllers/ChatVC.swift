@@ -224,6 +224,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
 //        attachmentBtn.isEnabled = true
 
         ViewHelper.showToastMessage(message: error)
+
     }
 
     @objc func getMessages(){
@@ -276,6 +277,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
                 let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageMessageCVC
                 imageCell.parentVC = self
                 imageCell.message = message
+                imageCell.type = type
                 imageCell.showImage()
                 cell = imageCell
 
@@ -283,6 +285,7 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
             case 2:
                 let voiceCell = collectionView.dequeueReusableCell(withReuseIdentifier: "voiceCell", for: indexPath) as! VoiceMessageCVC
                 voiceCell.message = message
+                voiceCell.type = type
                 voiceCell.delegate = self
                 voiceCell.indexpathraw = indexPath.row
                 voiceCell.parentVeiwController = self
@@ -371,6 +374,7 @@ extension ChatVC: MessageInputAreaViewControllerDelegate {
 
 extension ChatVC: sendChatDelegate {
     func sendChatStatus(isSucceed: Bool) {
+        self.messageInputAreaVC.waitingView.isHidden = true
         getMessages()
     }
 }

@@ -1,9 +1,9 @@
 //
 //  MessageInputAreaViewController.swift
-//  Divar
+//  negar
 //
-//  Created by Zahra Aghajani on 8/7/18.
-//  Copyright © 2018 Divar. All rights reserved.
+//  Created by Negar on 8/7/18.
+//  Copyright © 2018 negar. All rights reserved.
 //
 
 import MobileCoreServices
@@ -17,7 +17,7 @@ protocol MessageInputAreaViewControllerDelegate: class {
 class MessageInputAreaViewController: UIViewController {
     weak var messageVC: ChatVC?
     weak var delegate: MessageInputAreaViewControllerDelegate?
-    
+
     var conversationID: String
     var recordingViewController: VoiceRecorderViewController?
     var isRecording = false
@@ -30,8 +30,8 @@ class MessageInputAreaViewController: UIViewController {
     @IBOutlet weak var textViewLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var recordingView: UIView!
     @IBOutlet weak var sendButton: UIButton!
-    
-    
+    @IBOutlet weak var waitingView: UIView!
+
     init(conversationID: String, conversationIsEnded: Bool, type: typeEnum) {
         self.conversationID = conversationID
         self.conversationIsEnd = conversationIsEnded
@@ -45,6 +45,8 @@ class MessageInputAreaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.waitingView.isHidden = true
+        
         textView.layer.borderColor = UIColor.black.cgColor
         textView.layer.borderWidth = 1
         textView.textContainerInset = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
@@ -120,11 +122,14 @@ extension MessageInputAreaViewController: TGCameraDelegate, UINavigationControll
 
 extension MessageInputAreaViewController {
     fileprivate func sendPhoto(image: UIImage) {
+
         delegate?.sendChat(message: nil, image: image, filePath: nil, type: 1)
+        self.waitingView.isHidden = false
     }
     
     fileprivate func sendVoice(voicePath: URL) {
         delegate?.sendChat(message: nil, image: nil, filePath: voicePath, type: 2)
+        self.waitingView.isHidden = false
     }
 }
 

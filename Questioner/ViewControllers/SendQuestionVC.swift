@@ -136,10 +136,7 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     @objc func backBtnPressed(){
-        let chooseCategoryVC = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "ChooseCategoryVC")
-        let nv = UINavigationController()
-        nv.viewControllers = [chooseCategoryVC]
-        present(nv, animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
