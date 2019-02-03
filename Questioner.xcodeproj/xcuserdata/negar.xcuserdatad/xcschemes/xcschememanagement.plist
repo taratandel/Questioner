@@ -9,11 +9,14 @@
 			<key>orderHint</key>
 			<integer>13</integer>
 		</dict>
+<<<<<<< HEAD
 		<key>Questioner.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
+=======
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
 	</dict>
 </dict>
 </plist>

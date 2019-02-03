@@ -33,7 +33,11 @@ class ChatVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
     @IBOutlet weak var rateLbl: UILabel!
 
     var timer = Timer()
+<<<<<<< HEAD
     var currentVoiceCell: VoiceMessageCVC?
+=======
+    var currentVoiceCell = VoiceMessageCVC()
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
     var messageHelper = MessageHelper()
 
     var type = typeEnum.none
@@ -332,6 +336,7 @@ extension ChatVC: PlayAudioDelegate, ContactAndVoiceMessageCellProtocol {
 
     func audioPlayStatus(status: AudioPlayerStatus) {
         ViewHelper.showToastMessage(message: status.rawValue)
+<<<<<<< HEAD
         currentVoiceCell.resetVoiceAnimation(audioPlayStatus: status)
     }
     func cellDidTapedVoiceButton(_ cell: VoiceMessageCVC, isPlayingVoice: Bool, index: Int) {
@@ -343,6 +348,17 @@ extension ChatVC: PlayAudioDelegate, ContactAndVoiceMessageCellProtocol {
             self.currentVoiceCell = cell
             
             AudioPlayInstance.startPlaying(messages[index])
+=======
+    }
+    func cellDidTapedVoiceButton(_ cell: VoiceMessageCVC, isPlayingVoice: Bool, index: Int) {
+        if self.currentVoiceCell != nil && self.currentVoiceCell != cell {
+            ViewHelper.showToastMessage(message:"finished")
+        }
+        if isPlayingVoice {
+            self.currentVoiceCell = cell
+            let dataDecoded:Data = Data(base64Encoded: messages[index].file, options: Data.Base64DecodingOptions(rawValue: 0)) ?? Data()
+            AudioPlayInstance.playSoundWithPath(dataDecoded)
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
         } else {
             AudioPlayInstance.stopPlayer()
         }

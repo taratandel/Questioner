@@ -10,7 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Questioner/ViewControllers/ChatVC.swift"
+<<<<<<< HEAD
             timestampString = "569856716.197029"
+=======
+            timestampString = "569693652.565719"
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
@@ -26,7 +30,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Questioner/ViewControllers/ChatVC.swift"
+<<<<<<< HEAD
             timestampString = "569856716.197397"
+=======
+            timestampString = "569693652.600854"
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "184"
@@ -42,11 +50,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Questioner/ViewControllers/SendQuestionVC.swift"
+<<<<<<< HEAD
             timestampString = "569856716.197643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "240"
             endingLineNumber = "240"
+=======
+            timestampString = "569693687.61253"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
             landmarkName = "textViewDidBeginEditing(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,15 +74,24 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Questioner/ViewControllers/SendQuestionVC.swift"
+<<<<<<< HEAD
             timestampString = "569856716.197684"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "247"
             endingLineNumber = "247"
+=======
+            timestampString = "569693688.93451"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
             landmarkName = "textViewDidEndEditing(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+<<<<<<< HEAD
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
@@ -163,5 +188,7 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+=======
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
    </Breakpoints>
 </Bucket>

@@ -163,6 +163,7 @@ class VoiceMessageCVC: UICollectionViewCell {
         guard let delegate = self.delegate else { return }
         delegate.cellDidTapedVoiceButton(self, isPlayingVoice: sender.isSelected, index: indexpathraw)
     }
+<<<<<<< HEAD
 
     func resetVoiceAnimation(audioPlayStatus: AudioPlayerStatus) {
         switch audioPlayStatus {
@@ -178,4 +179,6 @@ class VoiceMessageCVC: UICollectionViewCell {
             playVoiceButton.isSelected = false
         }
     }
+=======
+>>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
 }
