@@ -53,7 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
         application.registerForRemoteNotifications()
 
-<<<<<<< HEAD
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "StudentData") != nil){
             let stdData = defaults.object(forKey: "StudentData") as! Student
@@ -70,8 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
             let logoVc = SegueHelper.createViewController(storyboardName: "Main", viewControllerId: "LogoVC") as! LogoVC
             self.window?.rootViewController = logoVc
         }
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
         return true
     }
 

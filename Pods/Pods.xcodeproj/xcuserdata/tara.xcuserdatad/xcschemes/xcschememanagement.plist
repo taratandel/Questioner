@@ -4,175 +4,71 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Alamofire.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>Alamofire.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>FirebaseCore.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>FirebaseCore.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>FirebaseMessaging.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>FirebaseMessaging.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>FloatRatingView.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>FloatRatingView.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>GoogleUtilities.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>GoogleUtilities.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>Pods-Questioner.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>Pods-Questioner.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>Pods-QuestionerTests.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>Pods-QuestionerTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>8</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>Pods-QuestionerUITests.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>9</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>Pods-QuestionerUITests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>Protobuf.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>Protobuf.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>10</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>SwiftyJSON.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>11</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>SwiftyJSON.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>TGCameraViewController.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>12</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>TGCameraViewController.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>UIColor_Hex_Swift.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>13</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>UIColor_Hex_Swift.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>13</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
-		<key>nanopb.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-<<<<<<< HEAD
 		<key>nanopb.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
 	</dict>
 </dict>
 </plist>

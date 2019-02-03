@@ -35,7 +35,6 @@ class AudioPlayManager: NSObject {
         }
         return Static.instance
     }
-<<<<<<< HEAD
     func startPlaying(_ message: Message) {
         try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
         try? AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
@@ -68,20 +67,6 @@ class AudioPlayManager: NSObject {
                 return
             }
             
-=======
-    func playSoundWithPath(_ fileData: Data) {
-        do {
-            self.audioPlayer = try AVAudioPlayer(data: fileData, fileTypeHint: AVFileType.m4a.rawValue)
-            guard let player = self.audioPlayer else { return }
-
-            player.delegate = self
-            player.prepareToPlay()
-
-            guard let delegate = self.delegate else {
-                return
-            }
-
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
             if player.play() {
                 delegate.audioPlayStatus(status: .start)
             } else {
@@ -91,7 +76,6 @@ class AudioPlayManager: NSObject {
             self.destroyPlayer()
         }
     }
-<<<<<<< HEAD
     
     func destroyPlayer() {
         self.stopPlayer()
@@ -100,22 +84,11 @@ class AudioPlayManager: NSObject {
     func stopPlayer() {
         if self.audioPlayer == nil { return }
         
-=======
-
-    func destroyPlayer() {
-        self.stopPlayer()
-    }
-
-    func stopPlayer() {
-        if self.audioPlayer == nil { return }
-
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
         self.audioPlayer!.delegate = nil
         self.audioPlayer!.stop()
         self.audioPlayer?.prepareToPlay()
         self.audioPlayer = nil
     }
-<<<<<<< HEAD
     
     fileprivate func convertAmrToWavAndPlaySound(_ message: Message) {
         if self.audioPlayer != nil {
@@ -164,18 +137,13 @@ class AudioPlayManager: NSObject {
                 }
         }
     }
-=======
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
+
 }
 
 extension AudioPlayManager: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         UIDevice.current.isProximityMonitoringEnabled = false
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
         if flag {
             self.delegate?.audioPlayStatus(status: .finished)
         } else {
@@ -183,29 +151,17 @@ extension AudioPlayManager: AVAudioPlayerDelegate {
         }
         self.stopPlayer()
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         self.stopPlayer()
         self.delegate?.audioPlayStatus(status: .failed)
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
     func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
         self.stopPlayer()
         self.delegate?.audioPlayStatus(status: .failed)
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 99b54d42abbfdd35c1c7c7f8c90a33eb768655ca
     func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
         self.delegate?.audioPlayStatus(status: .interrupted)
     }
