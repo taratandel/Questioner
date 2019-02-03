@@ -163,4 +163,19 @@ class VoiceMessageCVC: UICollectionViewCell {
         guard let delegate = self.delegate else { return }
         delegate.cellDidTapedVoiceButton(self, isPlayingVoice: sender.isSelected, index: indexpathraw)
     }
+
+    func resetVoiceAnimation(audioPlayStatus: AudioPlayerStatus) {
+        switch audioPlayStatus {
+        case .start:
+            playVoiceButton.setTitle("playing voice", for: .selected)
+        case .finished:
+            playVoiceButton.setTitle("playing audio", for: .normal)
+            playVoiceButton.isSelected = false
+        case .failed:
+            ViewHelper.showToastMessage(message: "Unable to play sound")
+        default:
+            playVoiceButton.setTitle("playing audio", for: .normal)
+            playVoiceButton.isSelected = false
+        }
+    }
 }

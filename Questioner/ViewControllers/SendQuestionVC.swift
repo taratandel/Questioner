@@ -180,10 +180,6 @@ class SendQuestionVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.present(alert, animated: true)
     }
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
-    }
-
     @IBAction func sendQuestion(_ sender: Any) {
         sendBtn.isEnabled = false
         backBtn.isEnabled = false
